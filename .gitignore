@@ -10,3 +10,5 @@ checkouts
 .classpath
 .project
 .settings
+*.iml
+.idea

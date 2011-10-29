@@ -29,6 +29,24 @@
     (is (= 2    (sec    d)))
     (is (= 1    (milli  d)))))
 
+(deftest test-date-midnight-and-accessors
+  (let [d (date-midnight 1986)]
+    (is (= 1986 (year   d)))
+    (is (= 1    (month  d)))
+    (is (= 1    (day    d)))
+    (is (= 0    (hour   d)))
+    (is (= 0    (minute d)))
+    (is (= 0    (sec    d)))
+    (is (= 0    (milli  d))))
+  (let [d (date-midnight 1986 10 14)]
+    (is (= 1986 (year   d)))
+    (is (= 10   (month  d)))
+    (is (= 14   (day    d)))
+    (is (= 0    (hour   d)))
+    (is (= 0    (minute d)))
+    (is (= 0    (sec    d)))
+    (is (= 0    (milli  d)))))
+
 (deftest test-day-of-week
   (let [d (date-time 2010 4 24)]
     (is (= 6 (day-of-week d))))

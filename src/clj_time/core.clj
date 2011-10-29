@@ -67,7 +67,7 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time DateTime DateTimeZone Period Interval)))
+  (:import (org.joda.time ReadableDateTime DateTime DateMidnight DateTimeZone Period Interval)))
 
 (def ^{:doc "DateTimeZone for UTC."}
       utc
@@ -80,6 +80,18 @@
 (defn epoch []
   "Returns a DateTime for the begining of the Unix epoch in the UTC time zone."
   (DateTime. (long 0) #^DateTimeZone utc))
+
+(defn date-midnight
+  "Constructs and returns a new DateMidnight in UTC.
+   Specify the year, month of year, day of month. Note that month and day are
+   1-indexed. Any number of least-significant components can be ommited, in which case
+   they will default to 1."
+  ([year]
+    (date-midnight year 1 1))
+  ([year month]
+    (date-midnight year month 1))
+  ([year month day]
+    (DateMidnight. year month day #^DateTimeZone utc)))
 
 (defn date-time
   "Constructs and returns a new DateTime in UTC.
@@ -105,45 +117,45 @@
    (DateTime. year month day hour minute second millis #^DateTimeZone utc)))
 
 (defn year
-  "Return the year component of the given DateTime."
-  [#^DateTime dt]
+  "Return the year component of the given ReadableDateTime."
+  [#^ReadableDateTime dt]
   (.getYear dt))
 
 (defn month
-  "Return the month-of-year component of the given DateTime. January is 1."
-  [#^DateTime dt]
+  "Return the month-of-year component of the given ReadableDateTime. January is 1."
+  [#^ReadableDateTime dt]
   (.getMonthOfYear dt))
 
 (defn day
-  "Return the day of month component of the given DateTime."
-  [#^DateTime dt]
+  "Return the day of month component of the given ReadableDateTime."
+  [#^ReadableDateTime dt]
   (.getDayOfMonth dt))
 
 (defn day-of-week
-  "Return the day of week component of the given DateTime. Monday is 1 and
+  "Return the day of week component of the given ReadableDateTime. Monday is 1 and
    Sunday is 7."
-  [#^DateTime dt]
+  [#^ReadableDateTime dt]
   (.getDayOfWeek dt))
 
 (defn hour
-  "Return the hour of day component of the given DateTime. A time of 12:01am
+  "Return the hour of day component of the given ReadableDateTime. A time of 12:01am
    will have an hour component of 0."
-  [#^DateTime dt]
+  [#^ReadableDateTime dt]
   (.getHourOfDay dt))
 
 (defn minute
-  "Return the minute of hour component of the given DateTime."
-  [#^DateTime dt]
+  "Return the minute of hour component of the given ReadableDateTime."
+  [#^ReadableDateTime dt]
   (.getMinuteOfHour dt))
 
 (defn sec
-  "Return the second-of-minute component of the given DateTime."
-  [#^DateTime dt]
+  "Return the second-of-minute component of the given ReadableDateTime."
+  [#^ReadableDateTime dt]
   (.getSecondOfMinute dt))
 
 (defn milli
-  "Return the millisecond-of-second component of the given DateTime."
-  [#^DateTime dt]
+  "Return the millisecond-of-second component of the given ReadableDateTime."
+  [#^ReadableDateTime dt]
   (.getMillisOfSecond dt))
 
 (defn time-zone-for-offset
@@ -164,27 +176,27 @@
   (DateTimeZone/getDefault))
 
 (defn to-time-zone
-  "Returns a new DateTime corresponding to the same absolute instant in time as
-   the given DateTime, but with calendar fields corresponding to the given
+  "Returns a new ReadableDateTime corresponding to the same absolute instant in time as
+   the given ReadableDateTime, but with calendar fields corresponding to the given
    TimeZone."
-  [#^DateTime dt #^DateTimeZone tz]
+  [#^ReadableDateTime dt #^DateTimeZone tz]
   (.withZone dt tz))
 
 (defn from-time-zone
-  "Returns a new DateTime corresponding to the same point in calendar time as
-   the given DateTime, but for a correspondingly different absolute instant in
+  "Returns a new ReadableDateTime corresponding to the same point in calendar time as
+   the given ReadableDateTime, but for a correspondingly different absolute instant in
    time."
-  [#^DateTime dt #^DateTimeZone tz]
+  [#^ReadableDateTime dt #^DateTimeZone tz]
   (.withZoneRetainFields dt tz))
 
 (defn after?
-  "Returns true if DateTime dt-a is strictly after DateTime dt-b."
-  [#^DateTime dt-a #^DateTime dt-b]
+  "Returns true if ReadableDateTime dt-a is strictly after ReadableDateTime dt-b."
+  [#^ReadableDateTime dt-a #^ReadableDateTime dt-b]
   (.isAfter dt-a dt-b))
 
 (defn before?
-  "Returns true if DateTime dt-a is strictly before DateTime dt-b."
-  [#^DateTime dt-a #^DateTime dt-b]
+  "Returns true if ReadableDateTime dt-a is strictly before ReadableDateTime dt-b."
+  [#^ReadableDateTime dt-a #^ReadableDateTime dt-b]
   (.isBefore dt-a dt-b))
 
 (defn years
@@ -228,17 +240,17 @@
   (Period/millis n))
 
 (defn plus
-  "Returns a new DateTime corresponding to the given DateTime moved forwards by
+  "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved forwards by
    the given Period(s)."
-  ([#^DateTime dt #^Period p]
+  ([#^ReadableDateTime dt #^Period p]
    (.plus dt p))
   ([dt p & ps]
    (reduce #(plus %1 %2) (plus dt p) ps)))
 
 (defn minus
-  "Returns a new DateTime corresponding to the given DateTime moved backwards by
+  "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved backwards by
    the given Period(s)."
-  ([#^DateTime dt #^Period p]
+  ([#^ReadableDateTime dt #^Period p]
    (.minus dt p))
   ([dt p & ps]
    (reduce #(minus %1 %2) (minus dt p) ps)))
@@ -256,9 +268,9 @@
   (plus (now) period))
 
 (defn interval
-  "Returns an interval representing the span between the two given DateTimes.
+  "Returns an interval representing the span between the two given ReadableDateTimes.
    Note that intervals are closed on the left and open on the right."
-  [#^DateTime dt-a #^DateTime dt-b]
+  [#^ReadableDateTime dt-a #^ReadableDateTime dt-b]
   (Interval. dt-a dt-b))
 
 (defn start
@@ -272,7 +284,7 @@
   (.getEnd in))
 
 (defn extend
-  "Returns an Interval with an end DateTime the specified Period after the end
+  "Returns an Interval with an end ReadableDateTime the specified Period after the end
    of the given Interval"
   [#^Interval in & by]
   (.withEnd in (apply plus (end in) by)))
@@ -303,10 +315,10 @@
   (int (/ (in-hours in) 24)))
 
 (defn within?
-  "Returns true if the given Interval contains the given DateTime. Note that
-   if the DateTime is exactly equal to the end of the interval, this function
+  "Returns true if the given Interval contains the given ReadableDateTime. Note that
+   if the ReadableDateTime is exactly equal to the end of the interval, this function
    returns false."
-  [#^Interval i #^DateTime dt]
+  [#^Interval i #^ReadableDateTime dt]
   (.contains i dt))
 
 (defn overlaps?
@@ -323,5 +335,3 @@
 
 (defn mins-ago [d]
   (in-minutes (interval d (now))))
-
-
