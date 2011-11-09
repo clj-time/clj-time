@@ -6,6 +6,9 @@
 (deftest test-now
   (is (<= 2010 (year (now)))))
 
+(deftest test-today-at-midnight
+  (is (<= 2010 (year (today-at-midnight)))))
+
 (deftest test-epoch
   (let [e (epoch)]
     (is (= 1970 (year e)))

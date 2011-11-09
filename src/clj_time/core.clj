@@ -77,6 +77,10 @@
   "Returns a DateTime for the current instant in the UTC time zone."
   (DateTime. #^DateTimeZone utc))
 
+(defn today-at-midnight []
+  "Returns a DateMidnight for today at midnight."
+  (DateMidnight.))
+
 (defn epoch []
   "Returns a DateTime for the begining of the Unix epoch in the UTC time zone."
   (DateTime. (long 0) #^DateTimeZone utc))
