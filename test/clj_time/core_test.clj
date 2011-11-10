@@ -1,13 +1,16 @@
 (ns clj-time.core-test
   (:refer-clojure :exclude [extend])
-  (:use clojure.test)
-  (:use clj-time.core))
+  (:use [utilize.testutils :only (do-at)]
+        clojure.test
+        clj-time.core))
 
 (deftest test-now
-  (is (<= 2010 (year (now)))))
+  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1) 
+                                (now)))))
 
 (deftest test-today-at-midnight
-  (is (<= 2010 (year (today-at-midnight)))))
+  (is (= (date-midnight 2010 1 1) (do-at (date-midnight 2010 1 1)
+                                    (today-at-midnight)))))
 
 (deftest test-epoch
   (let [e (epoch)]
