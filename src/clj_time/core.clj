@@ -67,7 +67,8 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadableDateTime DateTime DateMidnight DateTimeZone Period PeriodType Interval)))
+  (:import (org.joda.time ReadableDateTime DateTime DateMidnight DateTimeZone Period PeriodType Interval
+    Years Months Weeks Days Hours Minutes Seconds)))
 
 (def ^{:doc "DateTimeZone for UTC."}
       utc
@@ -209,7 +210,7 @@
   ([]
      (PeriodType/years))
   ([#^Integer n]
-     (Period/years n)))
+     (Years/years n)))
 
 (defn months
   "Given a number, returns a Period representing that many months.
@@ -217,7 +218,7 @@
   ([]
      (PeriodType/months))
   ([#^Integer n]
-     (Period/months n)))
+     (Months/months n)))
 
 (defn weeks
   "Given a number, returns a Period representing that many weeks.
@@ -225,7 +226,7 @@
   ([]
      (PeriodType/weeks))
   ([#^Integer n]
-     (Period/weeks n)))
+     (Weeks/weeks n)))
 
 (defn days
   "Given a number, returns a Period representing that many days.
@@ -233,7 +234,7 @@
   ([]
      (PeriodType/days))
   ([#^Integer n]
-     (Period/days n)))
+     (Days/days n)))
 
 (defn hours
   "Given a number, returns a Period representing that many hours.
@@ -241,7 +242,7 @@
   ([]
      (PeriodType/hours))
   ([#^Integer n]
-     (Period/hours n)))
+     (Hours/hours n)))
 
 (defn minutes
   "Given a number, returns a Period representing that many minutes.
@@ -249,7 +250,7 @@
   ([]
      (PeriodType/minutes))
   ([#^Integer n]
-     (Period/minutes n)))
+     (Minutes/minutes n)))
 
 (defn secs
   "Given a number, returns a Period representing that many seconds.
@@ -257,7 +258,7 @@
   ([]
      (PeriodType/seconds))
   ([#^Integer n]
-     (Period/seconds n)))
+     (Seconds/seconds n)))
 
 (defn millis
   "Given a number, returns a Period representing that many milliseconds.
@@ -375,6 +376,41 @@
    beginning of i-b."
   [#^Interval i-a #^Interval i-b]
   (.abuts i-a i-b))
+
+(defn years?
+  "Returns true if the given value is an instance of Years"
+  [val]
+  (instance? Years val))
+
+(defn months?
+  "Returns true if the given value is an instance of Months"
+  [val]
+  (instance? Months val))
+
+(defn weeks?
+  "Returns true if the given value is an instance of Weeks"
+  [val]
+  (instance? Weeks val))
+
+(defn days?
+  "Returns true if the given value is an instance of Days"
+  [val]
+  (instance? Days val))
+
+(defn hours?
+  "Returns true if the given value is an instance of Hours"
+  [val]
+  (instance? Hours val))
+
+(defn minutes?
+  "Returns true if the given value is an instance of Minutes"
+  [val]
+  (instance? Minutes val))
+
+(defn secs?
+  "Returns true if the given value is an instance of Seconds"
+  [val]
+  (instance? Seconds val))
 
 (defn mins-ago [d]
   (in-minutes (interval d (now))))

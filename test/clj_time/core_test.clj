@@ -214,5 +214,26 @@
     (is (not (abuts? (interval d1 d3) (interval d2 d3))))
     (is (abuts? (interval d2 d3) (interval d1 d2)))))
 
+(deftest test-years?
+  (is (years? (years 2))))
+
+(deftest test-months?
+  (is (months? (months 2))))
+
+(deftest test-weeks?
+  (is (weeks? (weeks 2))))
+
+(deftest test-days?
+  (is (days? (days 2))))
+
+(deftest test-hours?
+  (is (hours? (hours 2))))
+
+(deftest test-minutes?
+  (is (minutes? (minutes 2))))
+
+(deftest test-secs?
+  (is (secs? (secs 2))))
+
 (deftest mins-ago-test
   (is (= 5 (mins-ago (minus (now) (minutes 5))))))
