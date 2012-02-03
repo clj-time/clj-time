@@ -43,3 +43,12 @@
   (let [fmt (with-pivot-year (formatter "YY") 2050)]
     (is (= (date-time 2075 1 1)
            (parse fmt "75")))))
+
+(deftest test-multi-parser
+  (let [fmt (formatter utc "YYYY-MM-dd HH:mm" "YYYY/MM/dd@HH:mm" "YYYYMMddHHmm")]
+    (is (= "2012-02-01 22:15"
+           (unparse fmt (parse fmt "2012-02-01 22:15"))))
+    (is (= "2012-02-01 22:15"
+           (unparse fmt (parse fmt "2012/02/01@22:15"))))
+    (is (= "2012-02-01 22:15"
+           (unparse fmt (parse fmt "201202012215"))))))

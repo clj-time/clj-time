@@ -31,6 +31,7 @@
   (:import (java.util Locale)
            (org.joda.time Chronology DateTime DateTimeZone)
            (org.joda.time.format DateTimeFormat DateTimeFormatter
+                                 DateTimeFormatterBuilder DateTimeParser
                                  ISODateTimeFormat)))
 
 (declare formatter)
@@ -41,7 +42,14 @@
   ([#^String fmts]
      (formatter fmts utc))
   ([#^String fmts #^DateTimeZone dtz]
-     (.withZone (DateTimeFormat/forPattern fmts) dtz)))
+     (.withZone (DateTimeFormat/forPattern fmts) dtz))
+  ([#^DateTimeZone dtz fmts & more]
+    (let [printer (.getPrinter (formatter fmts dtz))
+          parsers (map #(.getParser (formatter % dtz)) (cons fmts more))]
+      (-> (DateTimeFormatterBuilder.)
+        (.append printer)
+        (.append nil (into-array DateTimeParser parsers))
+        (.toFormatter)))))
 
 (defn with-chronology
   "Return a copy of a formatter that uses the given Chronology."

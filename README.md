@@ -82,7 +82,17 @@ Once you have a formatter, parsing and printing are strait-forward:
     
     => (unparse custom-formatter (date-time 2010 10 3))
     \"20101003\"
-    
+
+To parse dates in multiple formats and format dates in just one format, you can do this:
+
+    => (def multi-parser (formatter (default-time-zone) \"YYYY-MM-dd\" \"YYYY/MM/dd\"))
+
+    => (unparse multi-parser (parse multi-parser "\2012-02-01\"))
+    \"2012-02-01\"
+
+    => (unparse multi-parser (parse multi-parser \"2012/02/01\"))
+    \"2012-02-01\"
+
 The namespace `clj-time.coerce` contains utility functions for coercing Joda `DateTime` instances to and from various other types:
 
     => (use 'clj-time.coerce)
