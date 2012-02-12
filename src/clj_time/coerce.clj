@@ -63,37 +63,32 @@
   (if-let [dt (to-date-time obj)]
     (Timestamp. (.getMillis dt))))
 
-(extend-type nil
-  ICoerce
+(extend-protocol ICoerce
+  nil
   (to-date-time [_]
-    nil))
+    nil)
 
-(extend-type Date
-  ICoerce
+  Date
   (to-date-time [date]
-    (from-date date)))
+    (from-date date))
 
-(extend-type DateTime
-  ICoerce
+  DateTime
   (to-date-time [date-time]
-    date-time))
+    date-time)
 
-(extend-type Integer
-  ICoerce
+  Integer
   (to-date-time [integer]
-    (from-long (long integer))))
+    (from-long (long integer)))
 
-(extend-type Long
-  ICoerce
+  Long
   (to-date-time [long]
-    (from-long long)))
+    (from-long long))
 
-(extend-type String
-  ICoerce
+  String
   (to-date-time [string]
-    (from-string string)))
+    (from-string string))
 
-(extend-type Timestamp
-  ICoerce
+  Timestamp
   (to-date-time [timestamp]
     (from-date timestamp)))
+
