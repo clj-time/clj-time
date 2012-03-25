@@ -4,6 +4,16 @@
         clojure.test
         clj-time.core))
 
+(deftest test-set-timezone!
+  (let [default-tz  *default-timezone*
+        tz (time-zone-for-offset -2)]
+    (is (= *default-timezone* utc))
+    (set-timezone! tz)
+    (is (not= *default-timezone* default-tz))
+    (is (= *default-timezone* tz))
+    (set-timezone! utc)
+    (is (= *default-timezone* default-tz))))
+
 (deftest test-now
   (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1) 
                                 (now)))))

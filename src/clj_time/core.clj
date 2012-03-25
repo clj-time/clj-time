@@ -20,7 +20,7 @@
      => (hour (date-time 1986 10 14 22))
      22
 
-   The date-time constructor always returns times in the UTC time zone. If you
+   The date-time constructor always returns times in the default time zone(UTC). If you
    want a time with the specified fields in a different time zone, use
    from-time-zone:
    
@@ -36,6 +36,12 @@
    In addition to time-zone-for-offset, you can use the time-zone-for-id and
    default-time-zone functions and the utc Var to constgruct or get DateTimeZone
    instances.
+
+    But also  you can change the default timezone by set-timezone! :
+
+     =>(set-timezone! (time-zone-for-offset -2))
+
+   Then functions such as (now),(epcoh),date-time etc. will return times in the time zone you have set.
 
    The functions after? and before? determine the relative position of two
    DateTime instances:
@@ -74,20 +80,29 @@
       utc
   (DateTimeZone/UTC))
 
+(def ^{:doc "Default timezone is utc,you can change this by set-timezone!"}  *default-timezone* utc)
+
+(defn set-timezone! [tz]
+  "Set the default timezone to the given one created by time-zone-for-offset or time-zone-for-id"
+  (alter-var-root #'*default-timezone*
+                  (constantly tz)
+                  (when (thread-bound? #'*default-timezone*)
+                    (set! *default-timezone* tz))))
+
 (defn now []
-  "Returns a DateTime for the current instant in the UTC time zone."
-  (DateTime. #^DateTimeZone utc))
+  "Returns a DateTime for the current instant in the default time zone(UTC)."
+  (DateTime. #^DateTimeZone *default-timezone*))
 
 (defn today-at-midnight []
-  "Returns a DateMidnight for today at midnight in the UTC time zone."
-  (DateMidnight. #^DateTimeZone utc))
+  "Returns a DateMidnight for today at midnight in the default time zone(UTC)."
+  (DateMidnight. #^DateTimeZone *default-timezone*))
 
 (defn epoch []
-  "Returns a DateTime for the begining of the Unix epoch in the UTC time zone."
-  (DateTime. (long 0) #^DateTimeZone utc))
+  "Returns a DateTime for the begining of the Unix epoch in the default time zone(UTC)."
+  (DateTime. (long 0) #^DateTimeZone *default-timezone*))
 
 (defn date-midnight
-  "Constructs and returns a new DateMidnight in UTC.
+  "Constructs and returns a new DateMidnight in default time zone(UTC).
    Specify the year, month of year, day of month. Note that month and day are
    1-indexed. Any number of least-significant components can be ommited, in which case
    they will default to 1."
@@ -96,10 +111,10 @@
   ([year month]
     (date-midnight year month 1))
   ([year month day]
-    (DateMidnight. year month day #^DateTimeZone utc)))
+    (DateMidnight. year month day #^DateTimeZone *default-timezone*)))
 
 (defn date-time
-  "Constructs and returns a new DateTime in UTC.
+  "Constructs and returns a new DateTime in default time zone(UTC).
    Specify the year, month of year, day of month, hour of day, minute if hour,
    second of minute, and millisecond of second. Note that month and day are
    1-indexed while hour, second, minute, and millis are 0-indexed.
@@ -119,7 +134,7 @@
    (date-time year month day hour minute second 0))
   ([#^Integer year #^Integer month #^Integer day #^Integer hour
     #^Integer minute #^Integer second #^Integer millis]
-   (DateTime. year month day hour minute second millis #^DateTimeZone utc)))
+   (DateTime. year month day hour minute second millis #^DateTimeZone *default-timezone*)))
 
 (defn year
   "Return the year component of the given ReadableDateTime."
