@@ -107,6 +107,32 @@ For example, to convert a Joda `DateTime` to and from a Java `long`:
 
 There are also conversions to and from `java.util.Date` (`to-date` and `from-date`), `java.sql.Date` (`to-sql-date` and `from-sql-date`) and several other types.
 
+The namespace `clj-time.local` contains functions for working with local time without having to shift to/from utc, 
+the preferred time zone of clj-time.core.
+
+Get the current local time with 
+
+    => (local-now)
+
+Get a local date-time instance retaining the time fields with
+
+    => (to-local-date-time obj)
+
+The following all return 1986-10-14 04:03:27.246 with the local time zone.
+
+    (to-local-date-time (clj-time.core/date-time 1986 10 14 4 3 27 246))
+    (to-local-date-time "1986-10-14T04:03:27.246")
+    (to-local-date-time "1986-10-14T04:03:27.246Z")
+
+The dynamic var \*local-formatters\* contains a map of local formatters for parsing and printing. It is initialized 
+with all the formatters in clj-time.format localized.
+
+to-local-date-time for strings uses \*local-formatters\* to parse.
+
+Format an obj using a formatter in \*local-formatters\* corresponding to the format-key passed in with
+
+    => (format-local-time (local-now) :basic-date-time)
+
 ## Installation
 
 `clj-time` is available as a Maven artifact via [Clojars](http://clojars.org/clj-time).

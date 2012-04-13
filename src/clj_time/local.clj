@@ -21,7 +21,8 @@
   to-local-date-time for strings uses *local-formatters* to parse.
 
   (format-local-time (local-now) :basic-date-time) formats an obj using
-  a formatter in *local-formatters* corresponding format-key passed in.  
+  a formatter in *local-formatters* corresponding to the  format-key
+  passed in.  
 "
   (require [clj-time.core :as time]
            [clj-time.coerce :as coerce]
