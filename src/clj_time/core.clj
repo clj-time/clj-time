@@ -67,7 +67,7 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadableDateTime DateTime DateMidnight DateTimeZone Period PeriodType Interval
+  (:import (org.joda.time ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight DateTimeZone Period PeriodType Interval
     Years Months Weeks Days Hours Minutes Seconds)))
 
 (def ^{:doc "DateTimeZone for UTC."}
@@ -98,7 +98,7 @@
   ([^Long year ^Long month ^Long day]
     (DateMidnight. year month day #^DateTimeZone utc)))
 
-(defn date-time
+(defn #^org.joda.time.DateTime date-time
   "Constructs and returns a new DateTime in UTC.
    Specify the year, month of year, day of month, hour of day, minute if hour,
    second of minute, and millisecond of second. Note that month and day are
@@ -180,28 +180,30 @@
   "Returns the default DateTimeZone for the current environment."
   (DateTimeZone/getDefault))
 
-(defn to-time-zone
+(defn #^org.joda.time.DateTime
+  to-time-zone
   "Returns a new ReadableDateTime corresponding to the same absolute instant in time as
    the given ReadableDateTime, but with calendar fields corresponding to the given
    TimeZone."
-  [#^ReadableDateTime dt #^DateTimeZone tz]
+  [#^DateTime dt #^DateTimeZone tz]
   (.withZone dt tz))
 
-(defn from-time-zone
+(defn #^org.joda.time.DateTime
+  from-time-zone
   "Returns a new ReadableDateTime corresponding to the same point in calendar time as
    the given ReadableDateTime, but for a correspondingly different absolute instant in
    time."
-  [#^ReadableDateTime dt #^DateTimeZone tz]
+  [#^DateTime dt #^DateTimeZone tz]
   (.withZoneRetainFields dt tz))
 
 (defn after?
   "Returns true if ReadableDateTime dt-a is strictly after ReadableDateTime dt-b."
-  [#^ReadableDateTime dt-a #^ReadableDateTime dt-b]
+  [#^ReadableInstant dt-a #^ReadableInstant dt-b]
   (.isAfter dt-a dt-b))
 
 (defn before?
   "Returns true if ReadableDateTime dt-a is strictly before ReadableDateTime dt-b."
-  [#^ReadableDateTime dt-a #^ReadableDateTime dt-b]
+  [#^ReadableInstant dt-a #^ReadableInstant dt-b]
   (.isBefore dt-a dt-b))
 
 (defn years
@@ -271,7 +273,7 @@
 (defn plus
   "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved forwards by
    the given Period(s)."
-  ([#^ReadableDateTime dt #^Period p]
+  ([#^DateTime dt #^ReadablePeriod p]
    (.plus dt p))
   ([dt p & ps]
    (reduce #(plus %1 %2) (plus dt p) ps)))
@@ -279,7 +281,7 @@
 (defn minus
   "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved backwards by
    the given Period(s)."
-  ([#^ReadableDateTime dt #^Period p]
+  ([#^DateTime dt #^ReadablePeriod p]
    (.minus dt p))
   ([dt p & ps]
    (reduce #(minus %1 %2) (minus dt p) ps)))

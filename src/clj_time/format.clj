@@ -30,7 +30,7 @@
   (:use clj-time.core)
   (:import (java.util Locale)
            (org.joda.time Chronology DateTime DateTimeZone)
-           (org.joda.time.format DateTimeFormat DateTimeFormatter
+           (org.joda.time.format DateTimeFormat DateTimeFormatter DateTimePrinter
                                  DateTimeFormatterBuilder DateTimeParser
                                  ISODateTimeFormat)))
 
@@ -44,10 +44,10 @@
   ([#^String fmts #^DateTimeZone dtz]
      (.withZone (DateTimeFormat/forPattern fmts) dtz))
   ([#^DateTimeZone dtz fmts & more]
-    (let [printer (.getPrinter (formatter fmts dtz))
-          parsers (map #(.getParser (formatter % dtz)) (cons fmts more))]
+    (let [printer (.getPrinter #^DateTimeFormatter (formatter fmts dtz))
+          parsers (map #(.getParser #^DateTimeFormatter (formatter % dtz)) (cons fmts more))]
       (-> (DateTimeFormatterBuilder.)
-        (.append printer (into-array DateTimeParser parsers))
+        #^DateTimeFormatterBuilder (.append #^DateTimePrinter printer (into-array DateTimeParser parsers))
         (.toFormatter)))))
 
 (defn with-chronology
@@ -144,8 +144,8 @@
   ([#^String s]
      (first
       (for [f (vals formatters)
-	    :let [d (try (parse f s) (catch Exception _ nil))]
-	    :when d] d))))
+            :let [d (try (parse f s) (catch Exception _ nil))]
+            :when d] d))))
 
 (defn unparse
   "Returns a string representing the given DateTime instance in UTC and in the

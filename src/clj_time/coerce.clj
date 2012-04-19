@@ -14,7 +14,8 @@
   (:import java.util.Date java.sql.Timestamp))
 
 (defprotocol ICoerce
-  (to-date-time [obj] "Convert `obj` to a Joda DateTime instance."))
+  (#^org.joda.time.DateTime
+    to-date-time [obj] "Convert `obj` to a Joda DateTime instance."))
 
 (defn from-long
   "Returns a DateTime instance in the UTC time zone corresponding to the given
@@ -66,7 +67,7 @@
   "Returns a string representation of obj in UTC time-zone
   using (ISODateTimeFormat/dateTime) date-time representation."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (if-let [#^DateTime dt (to-date-time obj)]
     (time-fmt/unparse (:date-time time-fmt/formatters) dt)))
 
 (defn to-timestamp
