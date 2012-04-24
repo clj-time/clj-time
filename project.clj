@@ -1,5 +1,5 @@
 ;; common dependencies:
-(def deps '[[joda-time "2.0"]])
+(def deps '[[joda-time "2.1"]])
 
 ;; project definition with additional dependencies:
 (defproject clj-time "0.4.2-SNAPSHOT"
