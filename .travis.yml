@@ -1,2 +1,6 @@
 language: clojure
 script: lein multi test
+jdk:
+  - openjdk6
+  - openjdk7
+  - oraclejdk7
