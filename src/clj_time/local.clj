@@ -43,9 +43,13 @@
 (defprotocol ILocalCoerce
   (to-local-date-time [obj] "convert `obj` to a local Joda DateTime instance retaining time fields."))
 
-(defn- as-local-date-time [obj]
+(defn- as-local-date-time-from-time-zone [obj]
   "Coerce to date-time in the default time zone retaining time fields."
   (-> obj coerce/to-date-time (time/from-time-zone (time/default-time-zone))))
+
+(defn- as-local-date-time-to-time-zone [obj]
+  "Coerce to date-time in the default time zone."
+  (-> obj coerce/to-date-time (time/to-time-zone (time/default-time-zone))))
 
 (defn- from-local-string
   "Return local DateTime instance from string using
@@ -64,23 +68,23 @@
 
   java.util.Date
   (to-local-date-time [date]
-    (as-local-date-time date))
+    (as-local-date-time-to-time-zone date))
 
   java.sql.Date
   (to-local-date-time [sql-date]
-    (as-local-date-time sql-date))
+    (as-local-date-time-to-time-zone sql-date))
 
   DateTime
   (to-local-date-time [date-time]
-    (as-local-date-time date-time))
+    (as-local-date-time-from-time-zone date-time))
 
   Integer
   (to-local-date-time [integer]
-    (as-local-date-time (long integer)))
+    (as-local-date-time-from-time-zone (long integer)))
 
   Long
   (to-local-date-time [long]
-    (as-local-date-time long))
+    (as-local-date-time-from-time-zone long))
 
   String
   (to-local-date-time [string]
@@ -88,7 +92,7 @@
 
   java.sql.Timestamp
   (to-local-date-time [timestamp]
-    (as-local-date-time timestamp)))
+    (as-local-date-time-to-time-zone timestamp)))
 
 (defn format-local-time [obj format-key]
   "Format obj as local time using the local formatter corresponding
