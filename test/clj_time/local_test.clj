@@ -24,6 +24,8 @@
   (is (= (time/from-time-zone (time/date-time 1998 4 25) (time/default-time-zone)) (to-local-date-time "1998-04-25T00:00:00.000"))))
 
 (deftest test-format-local-time
+  (is (nil? (format-local-time nil :basic-date-time)))
+  (is (nil? (format-local-time (local-now) ::bad-formatter)))
   (is (= (fmt/unparse (ISODateTimeFormat/basicDateTime) (time/from-time-zone (time/date-time 1998 4 25) (time/default-time-zone)))
          (format-local-time (time/from-time-zone (time/date-time 1998 4 25) (time/default-time-zone)) :basic-date-time)))
   (is (= (fmt/unparse (ISODateTimeFormat/basicDateTime) (time/from-time-zone (time/date-time 1998 4 25) (time/default-time-zone)))
