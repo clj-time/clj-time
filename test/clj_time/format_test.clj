@@ -51,4 +51,8 @@
     (is (= "2012-02-01 22:15"
            (unparse fmt (parse fmt "2012/02/01@22:15"))))
     (is (= "2012-02-01 22:15"
-           (unparse fmt (parse fmt "201202012215"))))))
+           (unparse fmt (parse fmt "201202012215"))))
+    (is (= (date-time 2012 2 1 22 15)
+           (parse fmt "201202012215")))
+    (is (= "2012-02-01 22:15"
+           (unparse fmt (date-time 2012 2 1 22 15))))))

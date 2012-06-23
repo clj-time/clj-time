@@ -48,7 +48,8 @@
           parsers (map #(.getParser #^DateTimeFormatter (formatter % dtz)) (cons fmts more))]
       (-> (DateTimeFormatterBuilder.)
         #^DateTimeFormatterBuilder (.append #^DateTimePrinter printer (into-array DateTimeParser parsers))
-        (.toFormatter)))))
+        (.toFormatter)
+        (.withZone dtz)))))
 
 (defn with-chronology
   "Return a copy of a formatter that uses the given Chronology."
