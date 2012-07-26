@@ -10,6 +10,11 @@
     (is (= (date-time 2010 3 11)
            (parse fmt "20100311")))))
 
+(deftest test-formatter-local
+  (let [fmt (formatter-local "yyyyMMdd")]
+    (is (= (local-date-time 2010 3 11)
+           (parse-local fmt "20100311")))))
+
 (deftest test-parse
   (let [fmt (formatters :date)]
     (is (= (date-time 2010 3 11)
@@ -29,6 +34,25 @@
            (unparse (formatter "yyyyMMdd'T'HHmmss.SSSZ"
                                (DateTimeZone/forOffsetHours -5))
                     (date-time 2010 3 11 17 49 20 881))))))
+
+(deftest test-local-parse
+  (let [fmt (formatters :date)]
+    (is (= (local-date-time 2010 3 11)
+           (parse-local fmt "2010-03-11"))))
+  (let [fmt (formatters :basic-date-time)]
+    (is (= (local-date-time 2010 3 11 17 49 20 881)
+           (parse-local fmt "20100311T174920.881Z")))))
+
+(deftest test-local-unparse
+  (let [fmt (formatters :date)]
+    (is (= "2010-03-11"
+           (unparse-local fmt (local-date-time 2010 3 11)))))
+  (let [fmt (formatters :basic-date-time)]
+    (is (= "20100311T174920.881"
+           (unparse-local fmt (local-date-time 2010 3 11 17 49 20 881))))
+    (is (= "20100311T174920.881"
+           (unparse-local (formatter-local "yyyyMMdd'T'HHmmss.SSS")
+                    (local-date-time 2010 3 11 17 49 20 881))))))
 
 (deftest test-formatter-modifiers
   (let [fmt (formatter "YYYY-MM-dd hh:mm z" (time-zone-for-id "America/Chicago"))]

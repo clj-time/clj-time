@@ -29,7 +29,7 @@
   (:use [clojure.set :only (difference)])
   (:use clj-time.core)
   (:import (java.util Locale)
-           (org.joda.time Chronology DateTime DateTimeZone)
+           (org.joda.time Chronology DateTime LocalDateTime DateTimeZone)
            (org.joda.time.format DateTimeFormat DateTimeFormatter DateTimePrinter
                                  DateTimeFormatterBuilder DateTimeParser
                                  ISODateTimeFormat)))
@@ -50,6 +50,11 @@
         #^DateTimeFormatterBuilder (.append #^DateTimePrinter printer (into-array DateTimeParser parsers))
         (.toFormatter)
         (.withZone dtz)))))
+
+(defn formatter-local
+  "Returns a custom formatter with no time zone info."
+  ([#^String fmt]
+     (DateTimeFormat/forPattern fmt)))
 
 (defn with-chronology
   "Return a copy of a formatter that uses the given Chronology."
@@ -148,10 +153,27 @@
             :let [d (try (parse f s) (catch Exception _ nil))]
             :when d] d))))
 
+(defn  parse-local
+  "Returns a LocalDateTime instance obtained by parsing the
+   given string according to the given formatter."
+  ([#^DateTimeFormatter fmt #^String s]
+     (.parseLocalDateTime fmt s))
+  ([#^String s]
+     (first
+      (for [f (vals formatters)
+            :let [d (try (parse f s) (catch Exception _ nil))]
+            :when d] d))))
+
 (defn unparse
   "Returns a string representing the given DateTime instance in UTC and in the
   form determined by the given formatter."
   [#^DateTimeFormatter fmt #^DateTime dt]
+  (.print fmt dt))
+
+(defn unparse-local
+  "Returns a string representing the given LocalDateTime instance in the
+  form determined by the given formatter."
+  [#^DateTimeFormatter fmt #^LocalDateTime dt]
   (.print fmt dt))
 
 (defn show-formatters

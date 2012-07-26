@@ -1,16 +1,22 @@
 (ns clj-time.core
   "The core namespace for date-time operations in the clj-time library.
 
-   Create a DateTime instance with date-time, specifying the year, month, day,
-   hour, minute, second, and millisecond:
+   Create a DateTime instance with date-time (or a LocalDateTime instance with local-date-time),
+   specifying the year, month, day, hour, minute, second, and millisecond:
 
      => (date-time 1986 10 14 4 3 27 456)
      #<DateTime 1986-10-14T04:03:27.456Z>
+
+     => (local-date-time 1986 10 14 4 3 27 456)
+     #<LocalDateTime 1986-10-14T04:03:27.456>
 
    Less-significant fields can be omitted:
 
      => (date-time 1986 10 14)
      #<DateTime 1986-10-14T00:00:00.000Z>
+
+     => (local-date-time 1986 10 14)
+     #<LocalDateTime 1986-10-14T00:00:00.000>
 
    Get the current time with (now) and the start of the Unix epoch with (epoch).
 
@@ -18,6 +24,9 @@
    corresponding fields:
 
      => (hour (date-time 1986 10 14 22))
+     22
+
+     => (hour (local-date-time 1986 10 14 22))
      22
 
    The date-time constructor always returns times in the UTC time zone. If you
@@ -43,11 +52,17 @@
      => (after? (date-time 1986 10) (date-time 1986 9))
      true
 
+     => (after? (local-date-time 1986 10) (local-date-time 1986 9))
+     true
+
    Often you will want to find a date some amount of time from a given date. For
    example, to find the time 1 month and 3 weeks from a given date-time:
 
      => (plus (date-time 1986 10 14) (months 1) (weeks 3))
      #<DateTime 1986-12-05T00:00:00.000Z>
+
+     => (plus (local-date-time 1986 10 14) (months 1) (weeks 3))
+     #<LocalDateTime 1986-12-05T00:00:00.000Z>
 
    An Interval is used to represent the span of time between two DateTime
    instances. Construct one using interval, then query them using within?,
@@ -67,8 +82,66 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight DateTimeZone Period PeriodType Interval
-    Years Months Weeks Days Hours Minutes Seconds)))
+  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
+
+(defprotocol DateTimeProtocol
+  "Interface for various date time functions"
+  (year [this] "Return the year component of the given date/time.")
+  (month [this]   "Return the month component of the given date/time.")
+  (day [this]   "Return the day of month component of the given date/time.") 
+  (day-of-week [this]   "Return the day of week component of the given date/time. Monday is 1 and Sunday is 7")
+  (hour [this]   "Return the hour of day component of the given date/time. A time of 12:01am will have an hour component of 0.")
+  (minute [this]   "Return the minute of hour component of the given date/time.")
+  (sec [this]   "Return the second of minute component of the given date/time.")
+  (milli [this]   "Return the millisecond of second component of the given date/time.")
+  (after? [this that] "Returns true if ReadableDateTime dt-a is strictly after date/time dt-b.")
+  (before? [this that] "Returns true if ReadableDateTime dt-a is strictly before date/time dt-b.")
+  (plus- [this #^ReadablePeriod period]
+    "Returns a new date/time corresponding to the given date/time moved forwards by the given Period(s).")
+  (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s)."))
+
+(extend-protocol DateTimeProtocol
+  org.joda.time.DateTime
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
+  (day [this] (.getDayOfMonth this))
+  (day-of-week [this] (.getDayOfWeek this))
+  (hour [this] (.getHourOfDay this))
+  (minute [this] (.getMinuteOfHour this))
+  (sec [this] (.getSecondOfMinute this))
+  (milli [this] (.getMillisOfSecond this))
+  (after? [this #^ReadableInstant that] (.isAfter this that))
+  (before? [this #^ReadableInstant that] (.isBefore this that))
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period))
+
+  org.joda.time.DateMidnight
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
+  (day [this] (.getDayOfMonth this))
+  (day-of-week [this] (.getDayOfWeek this))
+  (hour [this] (.getHourOfDay this))
+  (minute [this] (.getMinuteOfHour this))
+  (sec [this] (.getSecondOfMinute this))
+  (milli [this] (.getMillisOfSecond this))
+  (after? [this #^ReadableInstant that] (.isAfter this that))
+  (before? [this #^ReadableInstant that] (.isBefore this that))
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period))
+
+  org.joda.time.LocalDateTime
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
+  (day [this] (.getDayOfMonth this))
+  (day-of-week [this] (.getDayOfWeek this))
+  (hour [this] (.getHourOfDay this))
+  (minute [this] (.getMinuteOfHour this))
+  (sec [this] (.getSecondOfMinute this))
+  (milli [this] (.getMillisOfSecond this))
+  (after? [this #^ReadablePartial that] (.isAfter this that))
+  (before? [this #^ReadablePartial that] (.isBefore this that))
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period)))
 
 (def ^{:doc "DateTimeZone for UTC."}
       utc
@@ -121,47 +194,28 @@
     #^Integer minute #^Integer second #^Integer millis]
    (DateTime. year month day hour minute second millis #^DateTimeZone utc)))
 
-(defn year
-  "Return the year component of the given ReadableDateTime."
-  [#^ReadableDateTime dt]
-  (.getYear dt))
-
-(defn month
-  "Return the month-of-year component of the given ReadableDateTime. January is 1."
-  [#^ReadableDateTime dt]
-  (.getMonthOfYear dt))
-
-(defn day
-  "Return the day of month component of the given ReadableDateTime."
-  [#^ReadableDateTime dt]
-  (.getDayOfMonth dt))
-
-(defn day-of-week
-  "Return the day of week component of the given ReadableDateTime. Monday is 1 and
-   Sunday is 7."
-  [#^ReadableDateTime dt]
-  (.getDayOfWeek dt))
-
-(defn hour
-  "Return the hour of day component of the given ReadableDateTime. A time of 12:01am
-   will have an hour component of 0."
-  [#^ReadableDateTime dt]
-  (.getHourOfDay dt))
-
-(defn minute
-  "Return the minute of hour component of the given ReadableDateTime."
-  [#^ReadableDateTime dt]
-  (.getMinuteOfHour dt))
-
-(defn sec
-  "Return the second-of-minute component of the given ReadableDateTime."
-  [#^ReadableDateTime dt]
-  (.getSecondOfMinute dt))
-
-(defn milli
-  "Return the millisecond-of-second component of the given ReadableDateTime."
-  [#^ReadableDateTime dt]
-  (.getMillisOfSecond dt))
+(defn #^org.joda.time.LocalDateTime local-date-time
+  "Constructs and returns a new LocalDateTime.
+   Specify the year, month of year, day of month, hour of day, minute if hour,
+   second of minute, and millisecond of second. Note that month and day are
+   1-indexed while hour, second, minute, and millis are 0-indexed.
+   Any number of least-significant components can be ommited, in which case
+   they will default to 1 or 0 as appropriate."
+  ([year]
+   (local-date-time year 1 1 0 0 0 0))
+  ([year month]
+   (local-date-time year month 1 0 0 0 0))
+  ([year month day]
+   (local-date-time year month day 0 0 0 0))
+  ([year month day hour]
+   (local-date-time year month day hour 0 0 0))
+  ([year month day hour minute]
+   (local-date-time year month day hour minute 0 0))
+  ([year month day hour minute second]
+   (local-date-time year month day hour minute second 0))
+  ([#^Integer year #^Integer month #^Integer day #^Integer hour
+    #^Integer minute #^Integer second #^Integer millis]
+   (LocalDateTime. year month day hour minute second millis)))
 
 (defn time-zone-for-offset
   "Returns a DateTimeZone for the given offset, specified either in hours or
@@ -195,16 +249,6 @@
    time."
   [#^DateTime dt #^DateTimeZone tz]
   (.withZoneRetainFields dt tz))
-
-(defn after?
-  "Returns true if ReadableDateTime dt-a is strictly after ReadableDateTime dt-b."
-  [#^ReadableInstant dt-a #^ReadableInstant dt-b]
-  (.isAfter dt-a dt-b))
-
-(defn before?
-  "Returns true if ReadableDateTime dt-a is strictly before ReadableDateTime dt-b."
-  [#^ReadableInstant dt-a #^ReadableInstant dt-b]
-  (.isBefore dt-a dt-b))
 
 (defn years
   "Given a number, returns a Period representing that many years.
@@ -271,20 +315,20 @@
      (Period/millis n)))
 
 (defn plus
-  "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved forwards by
+  "Returns a new date/time corresponding to the given date/time moved forwards by
    the given Period(s)."
-  ([#^DateTime dt #^ReadablePeriod p]
-   (.plus dt p))
+  ([dt #^ReadablePeriod p]
+     (plus- dt p))
   ([dt p & ps]
-   (reduce #(plus %1 %2) (plus dt p) ps)))
+     (reduce #(plus- %1 %2) (plus- dt p) ps)))
 
 (defn minus
-  "Returns a new ReadableDateTime corresponding to the given ReadableDateTime moved backwards by
+  "Returns a new date/time object corresponding to the given date/time moved backwards by
    the given Period(s)."
-  ([#^DateTime dt #^ReadablePeriod p]
-   (.minus dt p))
+  ([dt #^ReadablePeriod p]
+   (minus- dt p))
   ([dt p & ps]
-   (reduce #(minus %1 %2) (minus dt p) ps)))
+     (reduce #(minus- %1 %2) (minus- dt p) ps)))
 
 (defn ago
   "Returns a DateTime a supplied period before the present.

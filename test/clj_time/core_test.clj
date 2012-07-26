@@ -53,8 +53,32 @@
     (is (= 0    (sec    d)))
     (is (= 0    (milli  d)))))
 
+(deftest test-local-date-time-and-accessors
+  (let [d (local-date-time 1986)]
+    (is (= 1986 (year   d)))
+    (is (= 1    (month  d)))
+    (is (= 1    (day    d)))
+    (is (= 0    (hour   d)))
+    (is (= 0    (minute d)))
+    (is (= 0    (sec    d)))
+    (is (= 0    (milli  d))))
+  (let [d (date-time 1986 10 14 4 3 2 1)]
+    (is (= 1986 (year   d)))
+    (is (= 10   (month  d)))
+    (is (= 14   (day    d)))
+    (is (= 4    (hour   d)))
+    (is (= 3    (minute d)))
+    (is (= 2    (sec    d)))
+    (is (= 1    (milli  d)))))
+
 (deftest test-day-of-week
   (let [d (date-time 2010 4 24)]
+    (is (= 6 (day-of-week d))))
+  (let [d (date-time 1918 11 11)]
+    (is (= 1 (day-of-week d)))))
+
+(deftest test-day-of-week-local
+  (let [d (local-date-time 2010 4 24)]
     (is (= 6 (day-of-week d))))
   (let [d (date-time 1918 11 11)]
     (is (= 1 (day-of-week d)))))
@@ -114,6 +138,41 @@
          (minus (date-time 1986 10 14 6) (hours 2))))
   (is (= (date-time 1986 10 14 4 2)
          (minus (date-time 1986 10 14 6 5) (hours 2) (minutes 3)))))
+
+(deftest test-after?-local
+  (is (after? (local-date-time 1987) (local-date-time 1986)))
+  (is (not (after? (local-date-time 1986) (local-date-time 1987))))
+  (is (not (after? (local-date-time 1986) (local-date-time 1986)))))
+
+(deftest test-before?-local
+  (is (before? (local-date-time 1986) (local-date-time 1987)))
+  (is (not (before? (local-date-time 1987) (local-date-time 1986))))
+  (is (not (before? (local-date-time 1986) (local-date-time 1986)))))
+
+(deftest test-periods-local
+  (is (= (local-date-time 1986 10 14 4 3 2 1)
+         (plus (local-date-time 1984)
+           (years 2)
+           (months 9)
+           (days 13)
+           (hours 4)
+           (minutes 3)
+           (secs 2)
+           (millis 1))))
+  (is (= (local-date-time 1986 1 8)
+         (plus (local-date-time 1986 1 1) (weeks 1)))))
+
+(deftest test-plus-local
+  (is (= (local-date-time 1986 10 14 6)
+         (plus (local-date-time 1986 10 14 4) (hours 2))))
+  (is (= (local-date-time 1986 10 14 6 5)
+         (plus (local-date-time 1986 10 14 4 2) (hours 2) (minutes 3)))))
+
+(deftest test-minus-local
+  (is (= (local-date-time 1986 10 14 4)
+         (minus (local-date-time 1986 10 14 6) (hours 2))))
+  (is (= (local-date-time 1986 10 14 4 2)
+         (minus (local-date-time 1986 10 14 6 5) (hours 2) (minutes 3)))))
 
 (defmacro when-available
   [sym & body]
