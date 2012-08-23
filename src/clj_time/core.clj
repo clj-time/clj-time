@@ -460,3 +460,12 @@
 
 (defn mins-ago [d]
   (in-minutes (interval d (now))))
+
+(defn sunday-of-this-week [dt]
+  "Returns the DateTime for the Sunday of the current week.
+   If dt is a Sunday, returns dt."
+  (let [target-day "Sunday"]
+    (if (= (.getAsText (.dayOfWeek dt)) target-day)
+      dt
+      (recur (minus dt (days 1))))))
+

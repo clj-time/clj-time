@@ -94,3 +94,12 @@
   (is (= (Timestamp. 893462400000) (to-timestamp 893462400000)))
   (is (= (Timestamp. 893462400000) (to-timestamp (Timestamp. 893462400000))))
   (is (= (Timestamp. 893462400000) (to-timestamp "1998-04-25T00:00:00.000Z"))))
+
+(deftest test-sunday-of-this-week
+  (is (= (date-time 2012 8 19) (sunday-of-this-week (date-time 2012 8 23))))
+  (is (= (date-time 2012 8 19) (sunday-of-this-week (date-time 2012 8 25))))
+  (is (= (date-time 2012 8 19) (sunday-of-this-week (date-time 2012 8 19))))
+  (is (= (date-time 2012 1 1) (sunday-of-this-week (date-time 2012 1 3))))
+  (is (= (date-time 2012 1 1) (sunday-of-this-week (date-time 2012 1 1))))
+  (is (= (date-time 2011 12 25) (sunday-of-this-week (date-time 2011 12 31)))))
+  
