@@ -139,7 +139,7 @@ Format an obj using a formatter in \*local-formatters\* corresponding to the for
 
 Current stable build dependency:
 
-    [clj-time "0.4.3"]
+    [clj-time "0.4.4"]
 
 ## Development
 
