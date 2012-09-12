@@ -9,17 +9,17 @@
 
    To see a list of available built-in formatters and an example of a date-time
    printed in their format:
-   
+
     (show-formatters)
-   
+
    Once you have a formatter, parsing and printing are strait-forward:
-   
+
      => (parse custom-formatter \"20100311\")
      #<DateTime 2010-03-11T00:00:00.000Z>
-   
+
      => (unparse custom-formatter (date-time 2010 10 3))
      \"20101003\"
-   
+
    By default the parse function always returns a DateTime instance with a UTC
    time zone, and the unparse function always represents a given DateTime
    instance in UTC. A formatter can be modified to different timezones, locales,
@@ -47,7 +47,9 @@
     (let [printer (.getPrinter #^DateTimeFormatter (formatter fmts dtz))
           parsers (map #(.getParser #^DateTimeFormatter (formatter % dtz)) (cons fmts more))]
       (-> (DateTimeFormatterBuilder.)
-        #^DateTimeFormatterBuilder (.append #^DateTimePrinter printer (into-array DateTimeParser parsers))
+        #^DateTimeFormatterBuilder (.append #^DateTimePrinter printer
+                                            #^"[Lorg.joda.time.format.DateTimeParser;"
+                                            (into-array DateTimeParser parsers))
         (.toFormatter)
         (.withZone dtz)))))
 

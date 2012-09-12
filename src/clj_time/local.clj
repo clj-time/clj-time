@@ -4,7 +4,7 @@
 
    Get the current local time with (local-now).
 
-   (to-local-date-time obj) returns a local date-time instance 
+   (to-local-date-time obj) returns a local date-time instance
    retaining the time fields.
 
   The following all return 1986-10-14 04:03:27.246 with the
@@ -22,12 +22,12 @@
 
   (format-local-time (local-now) :basic-date-time) formats an obj using
   a formatter in *local-formatters* corresponding to the  format-key
-  passed in.  
+  passed in.
 "
   (require [clj-time.core :as time]
            [clj-time.coerce :as coerce]
            [clj-time.format :as fmt])
-  (:import (org.joda.time DateTime)
+  (:import (org.joda.time DateTime DateTimeZone)
            (org.joda.time.format DateTimeFormatter)))
 
 (def ^{:doc "Map of local formatters for parsing and printing." :dynamic true}
@@ -38,7 +38,7 @@
 
 (defn local-now []
   "Returns a DateTime for the current instant in the default time zone."
-  (DateTime/now (time/default-time-zone)))
+  (DateTime/now #^DateTimeZone (time/default-time-zone)))
 
 (defprotocol ILocalCoerce
   (to-local-date-time [obj] "convert `obj` to a local Joda DateTime instance retaining time fields."))
