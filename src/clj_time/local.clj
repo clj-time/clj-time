@@ -97,5 +97,6 @@
 (defn format-local-time [obj format-key]
   "Format obj as local time using the local formatter corresponding
    to format-key."
-  (when-let [fmt (and obj (format-key *local-formatters*))]
-    (fmt/unparse fmt (to-local-date-time obj))))
+  (when-let [dt (to-local-date-time obj)]
+    (when-let [fmt (format-key *local-formatters*)]
+      (fmt/unparse fmt dt))))
