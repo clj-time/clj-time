@@ -80,11 +80,11 @@
 
   Integer
   (to-local-date-time [integer]
-    (as-local-date-time-from-time-zone (long integer)))
+    (as-local-date-time-to-time-zone (long integer)))
 
   Long
   (to-local-date-time [long]
-    (as-local-date-time-from-time-zone long))
+    (as-local-date-time-to-time-zone long))
 
   String
   (to-local-date-time [string]
