@@ -243,6 +243,14 @@
   (.withZone dt tz))
 
 (defn #^org.joda.time.DateTime
+  to-default-time-zone
+  "Returns a new ReadableDateTime corresponding to the same absolute instant in time as
+   the given ReadableDateTime, but with calendar fields corresponding to the default
+   TimeZone."
+  [#^DateTime dt]
+  (.withZone dt (default-time-zone)))
+
+(defn #^org.joda.time.DateTime
   from-time-zone
   "Returns a new ReadableDateTime corresponding to the same point in calendar time as
    the given ReadableDateTime, but for a correspondingly different absolute instant in
