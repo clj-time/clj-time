@@ -5,7 +5,7 @@
         clj-time.core))
 
 (deftest test-now
-  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1) 
+  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1)
                                 (now)))))
 
 (deftest test-today-at-midnight
@@ -274,25 +274,13 @@
     (is (abuts? (interval d2 d3) (interval d1 d2)))))
 
 (deftest test-years?
-  (is (years? (years 2))))
-
-(deftest test-months?
-  (is (months? (months 2))))
-
-(deftest test-weeks?
-  (is (weeks? (weeks 2))))
-
-(deftest test-days?
-  (is (days? (days 2))))
-
-(deftest test-hours?
-  (is (hours? (hours 2))))
-
-(deftest test-minutes?
-  (is (minutes? (minutes 2))))
-
-(deftest test-secs?
-  (is (secs? (secs 2))))
+  (is (period? (years 2)))
+  (is (period? (months 2)))
+  (is (period? (weeks 2)))
+  (is (period? (days 2)))
+  (is (period? (hours 2)))
+  (is (period? (minutes 2)))
+  (is (period? (secs 2))))
 
 (deftest mins-ago-test
   (is (= 5 (mins-ago (minus (now) (minutes 5))))))

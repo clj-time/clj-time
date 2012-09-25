@@ -82,8 +82,67 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime))
-  (:use clj-time.protocols))
+  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod ReadableInterval DateTime DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds)))
+
+
+(defprotocol DateTimeProtocol
+  "Interface for various date time functions"
+  (year [this] "Return the year component of the given date/time.")
+  (month [this]   "Return the month component of the given date/time.")
+  (day [this]   "Return the day of month component of the given date/time.")
+  (day-of-week [this]   "Return the day of week component of the given date/time. Monday is 1 and Sunday is 7")
+  (hour [this]   "Return the hour of day component of the given date/time.
+                  A time of 12:01am will have an hour component of 0.")
+  (minute [this]   "Return the minute of hour component of the given date/time.")
+  (sec [this]   "Return the second of minute component of the given date/time.")
+  (milli [this]   "Return the millisecond of second component of the given date/time."))
+
+(defprotocol ChangeProtocol
+  (plus- [this #^ReadablePeriod period]   "Returns forwards by the given Period(s).")
+  (minus- [this #^ReadablePeriod period]  "Returns backwards by the given Period(s)."))
+
+(defprotocol ComparisonProtocol
+  (after? [this that] "Returns true if 'this' is strictly after 'that'.")
+  (before? [this that] "Returns true if 'this' is strictly after 'that'."))
+
+(extend-type org.joda.time.Period
+  ChangeProtocol
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period)))
+
+(extend-type org.joda.time.Interval
+  ComparisonProtocol
+  (after? [this that] (.isAfter this that))
+  (before? [this that] (.isBefore this that))
+  ChangeProtocol
+  (plus- [this #^ReadablePeriod period]
+    (Interval. (.getStart this)
+               (.plus (.toPeriod this) period)))
+  (minus- [this #^ReadablePeriod period]
+    (Interval. (.getStart this)
+               (.minus (.toPeriod this) period))))
+
+(extend-type org.joda.time.DateTime
+  DateTimeProtocol
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
+  (day [this] (.getDayOfMonth this))
+  (day-of-week [this] (.getDayOfWeek this))
+  (hour [this] (.getHourOfDay this))
+  (minute [this] (.getMinuteOfHour this))
+  (sec [this] (.getSecondOfMinute this))
+  (milli [this] (.getMillisOfSecond this))
+  ComparisonProtocol
+  (after? [this that]
+    (cond (instance? ReadableInterval that) (.isAfter that this)
+          :else (.isAfter this that)))
+  (before? [this that]
+    (cond (instance? ReadableInterval that) (.isBefore that this)
+          :else (.isBefore this that)))
+  ChangeProtocol
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period)))
+
 
 (def ^{:doc "DateTimeZone for UTC."}
       utc
@@ -374,40 +433,10 @@
   [#^Interval i-a #^Interval i-b]
   (.abuts i-a i-b))
 
-(defn years?
-  "Returns true if the given value is an instance of Years"
-  [val]
-  (instance? Years val))
-
-(defn months?
-  "Returns true if the given value is an instance of Months"
-  [val]
-  (instance? Months val))
-
-(defn weeks?
-  "Returns true if the given value is an instance of Weeks"
-  [val]
-  (instance? Weeks val))
-
-(defn days?
-  "Returns true if the given value is an instance of Days"
-  [val]
-  (instance? Days val))
-
-(defn hours?
-  "Returns true if the given value is an instance of Hours"
-  [val]
-  (instance? Hours val))
-
-(defn minutes?
-  "Returns true if the given value is an instance of Minutes"
-  [val]
-  (instance? Minutes val))
-
-(defn secs?
+(defn period?
   "Returns true if the given value is an instance of Seconds"
   [val]
-  (instance? Seconds val))
+  (instance? Period val))
 
 (defn mins-ago [d]
   (in-minutes (interval d (now))))
