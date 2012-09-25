@@ -107,5 +107,13 @@
 
   Timestamp
   (to-date-time [timestamp]
-    (from-date timestamp)))
+    (from-date timestamp))
+
+  org.joda.time.DateMidnight
+  (to-date-time [date-midnight] 
+    (from-long (.getMillis date-midnight)))
+
+  org.joda.time.LocalDateTime
+  (to-date-time [local-datetime] 
+    (.toDateTime local-datetime)))
 
