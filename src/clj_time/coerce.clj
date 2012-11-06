@@ -10,7 +10,7 @@
   (:refer-clojure :exclude [extend])
   (:use clj-time.core)
   (:require [clj-time.format :as time-fmt])
-  (:import (org.joda.time DateTime DateTimeZone))
+  (:import (org.joda.time DateTime DateTimeZone DateMidnight))
   (:import java.util.Date java.sql.Timestamp))
 
 (defprotocol ICoerce
@@ -90,6 +90,10 @@
     (from-sql-date sql-date))
 
   DateTime
+  (to-date-time [date-time]
+    date-time)
+
+  DateMidnight
   (to-date-time [date-time]
     date-time)
 
