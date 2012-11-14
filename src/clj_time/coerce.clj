@@ -94,8 +94,8 @@
     date-time)
 
   DateMidnight
-  (to-date-time [date-time]
-    date-time)
+  (to-date-time [date-midnight]
+    (.toDateTime date-midnight))
 
   Integer
   (to-date-time [integer]

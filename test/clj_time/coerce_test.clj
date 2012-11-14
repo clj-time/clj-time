@@ -55,6 +55,7 @@
   (is (nil? (to-date-time "x")))
   (is (= (date-time 1998 4 25) (to-date-time (date-time 1998 4 25))))
   (is (= (date-midnight 1998 4 25) (to-date-time (date-time 1998 4 25))))
+  (is (= (date-time 2000 1 1 1) (plus (to-date-time (date-midnight 2000 1 1)) (hours 1))))
   (is (= (date-time 1998 4 25) (to-date-time (Date. 893462400000))))
   (is (= (date-time 1998 4 25) (to-date-time (java.sql.Date. 893462400000))))
   (is (= (date-time 1970 1 1) (to-date-time 0)))
