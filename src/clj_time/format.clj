@@ -155,7 +155,7 @@
             :let [d (try (parse f s) (catch Exception _ nil))]
             :when d] d))))
 
-(defn  parse-local
+(defn parse-local
   "Returns a LocalDateTime instance obtained by parsing the
    given string according to the given formatter."
   ([#^DateTimeFormatter fmt #^String s]
@@ -163,7 +163,7 @@
   ([#^String s]
      (first
       (for [f (vals formatters)
-            :let [d (try (parse f s) (catch Exception _ nil))]
+            :let [d (try (parse-local f s) (catch Exception _ nil))]
             :when d] d))))
 
 (defn unparse

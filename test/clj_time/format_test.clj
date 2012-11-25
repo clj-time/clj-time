@@ -16,6 +16,8 @@
            (parse-local fmt "20100311")))))
 
 (deftest test-parse
+  (is (= (date-time 2010 10 11)
+         (parse "2010-10-11T00:00:00")))
   (let [fmt (formatters :date)]
     (is (= (date-time 2010 3 11)
            (parse fmt "2010-03-11"))))
@@ -36,6 +38,8 @@
                     (date-time 2010 3 11 17 49 20 881))))))
 
 (deftest test-local-parse
+  (is (= (local-date-time 2010 10 11)
+         (parse-local "2010-10-11T00:00:00")))
   (let [fmt (formatters :date)]
     (is (= (local-date-time 2010 3 11)
            (parse-local fmt "2010-03-11"))))
