@@ -395,7 +395,7 @@
   (.getWeeks (.toPeriod in (weeks))))
 
 (defn in-months
-  "Returns the number of standard years in the given Interval."
+  "Returns the number of standard months in the given Interval."
   [#^Interval in]
   (.getMonths (.toPeriod in (months))))
 
