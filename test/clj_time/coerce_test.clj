@@ -23,6 +23,10 @@
   (is (= (from-string "1998-04-25T00:00:00.000Z")
          (date-time 1998 4 25))))
 
+(deftest test-from-year-month
+  (is (= (to-date-time (year-month 1998 4))
+         (date-time 1998 4))))
+
 (deftest test-to-date
   (is (nil? (to-date nil)))
   (is (nil? (to-date "")))

@@ -82,7 +82,7 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
+  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight YearMonth DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
 
 (defprotocol DateTimeProtocol
   "Interface for various date time functions"
@@ -138,6 +138,14 @@
   (minute [this] (.getMinuteOfHour this))
   (sec [this] (.getSecondOfMinute this))
   (milli [this] (.getMillisOfSecond this))
+  (after? [this #^ReadablePartial that] (.isAfter this that))
+  (before? [this #^ReadablePartial that] (.isBefore this that))
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period))
+
+  org.joda.time.YearMonth
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
   (after? [this #^ReadablePartial that] (.isAfter this that))
   (before? [this #^ReadablePartial that] (.isBefore this that))
   (plus- [this #^ReadablePeriod period] (.plus this period))
@@ -216,6 +224,15 @@
   ([#^Integer year #^Integer month #^Integer day #^Integer hour
     #^Integer minute #^Integer second #^Integer millis]
    (LocalDateTime. year month day hour minute second millis)))
+
+(defn #^org.joda.time.YearMonth year-month
+  "Constructs and returns a new YearMonth.
+   Specify the year and month of year. Month is 1-indexed and defaults
+   to January (1)."
+  ([year]
+     (year-month year 1))
+  ([#^Integer year #^Integer month]
+     (YearMonth. year month)))
 
 (defn time-zone-for-offset
   "Returns a DateTimeZone for the given offset, specified either in hours or

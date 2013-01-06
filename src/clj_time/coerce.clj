@@ -10,7 +10,7 @@
   (:refer-clojure :exclude [extend])
   (:use clj-time.core)
   (:require [clj-time.format :as time-fmt])
-  (:import (org.joda.time DateTime DateTimeZone DateMidnight))
+  (:import (org.joda.time DateTime DateTimeZone DateMidnight YearMonth))
   (:import java.util.Date java.sql.Timestamp))
 
 (defprotocol ICoerce
@@ -96,6 +96,10 @@
   DateMidnight
   (to-date-time [date-midnight]
     (.toDateTime date-midnight))
+
+  YearMonth
+  (to-date-time [year-month]
+    (date-time (year year-month) (month year-month)))
 
   Integer
   (to-date-time [integer]

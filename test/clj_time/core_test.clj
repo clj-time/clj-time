@@ -71,6 +71,14 @@
     (is (= 2    (sec    d)))
     (is (= 1    (milli  d)))))
 
+(deftest test-year-month-and-accessors
+  (let [d (year-month 1986)]
+    (is (= 1986 (year   d)))
+    (is (= 1    (month  d))))
+  (let [d (date-time 1986 10)]
+    (is (= 1986 (year   d)))
+    (is (= 10   (month  d)))))
+
 (deftest test-day-of-week
   (let [d (date-time 2010 4 24)]
     (is (= 6 (day-of-week d))))
