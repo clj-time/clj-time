@@ -32,13 +32,13 @@
    The date-time constructor always returns times in the UTC time zone. If you
    want a time with the specified fields in a different time zone, use
    from-time-zone:
-   
+
      => (from-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-22T00:00:00.000-02:00>
-   
+
    If on the other hand you want a given absolute instant in time in a
    different time zone, use to-time-zone:
-   
+
      => (to-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-21T22:00:00.000-02:00>
 
@@ -71,10 +71,10 @@
      => (within? (interval (date-time 1986) (date-time 1990))
                  (date-time 1987))
      true
-   
+
    To find the amount of time encompased by an interval, use in-secs and
    in-minutes:
-   
+
      => (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))
      17280
 
@@ -88,7 +88,7 @@
   "Interface for various date time functions"
   (year [this] "Return the year component of the given date/time.")
   (month [this]   "Return the month component of the given date/time.")
-  (day [this]   "Return the day of month component of the given date/time.") 
+  (day [this]   "Return the day of month component of the given date/time.")
   (day-of-week [this]   "Return the day of week component of the given date/time. Monday is 1 and Sunday is 7")
   (hour [this]   "Return the hour of day component of the given date/time. A time of 12:01am will have an hour component of 0.")
   (minute [this]   "Return the minute of hour component of the given date/time.")
@@ -346,6 +346,22 @@
    (minus- dt p))
   ([dt p & ps]
      (reduce #(minus- %1 %2) (minus- dt p) ps)))
+
+(defn multiplied-by
+  "Returns a new date/time object corresponding to the given date/time multiplied by
+   the given integer(s)."
+  ([dt p]
+     (.multipliedBy dt p))
+  ([dt p & ps]
+     (reduce #(.multipliedBy %1 %2) (.multipliedBy dt p) ps)))
+
+(defn divided-by
+  "Returns a new date/time object corresponding to the given date/time divided by
+   the given integer(s)."
+  ([dt p]
+     (.dividedBy dt p))
+  ([dt p & ps]
+     (reduce #(.dividedBy %1 %2) (.dividedBy dt p) ps)))
 
 (defn ago
   "Returns a DateTime a supplied period before the present.
