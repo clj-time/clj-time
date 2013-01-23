@@ -99,8 +99,10 @@
   (plus- [this #^ReadablePeriod period]
     "Returns a new date/time corresponding to the given date/time moved forwards by the given Period(s).")
   (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s).")
-  (divided-by- [this #^Integer n])
-  (multiplied-by- [this #^Integer n]))
+  (divided-by- [this #^Integer n]
+    "Returns a new Period corresponding to the given Period divided by the given integer(s).")
+  (multiplied-by- [this #^Integer n]
+    "Returns a new Period corresponding to the given Period multiplied by the given integer(s)."))
 
 (extend-protocol DateTimeProtocol
   org.joda.time.DateTime
