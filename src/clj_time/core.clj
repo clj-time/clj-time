@@ -98,7 +98,9 @@
   (before? [this that] "Returns true if ReadableDateTime dt-a is strictly before date/time dt-b.")
   (plus- [this #^ReadablePeriod period]
     "Returns a new date/time corresponding to the given date/time moved forwards by the given Period(s).")
-  (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s)."))
+  (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s).")
+  (divided-by- [this #^Integer n])
+  (multiplied-by- [this #^Integer n]))
 
 (extend-protocol DateTimeProtocol
   org.joda.time.DateTime
@@ -149,7 +151,17 @@
   (after? [this #^ReadablePartial that] (.isAfter this that))
   (before? [this #^ReadablePartial that] (.isBefore this that))
   (plus- [this #^ReadablePeriod period] (.plus this period))
-  (minus- [this #^ReadablePeriod period] (.minus this period)))
+  (minus- [this #^ReadablePeriod period] (.minus this period))
+
+  org.joda.time.Hours
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (multiplied-by- [this #^Integer n] (.multipliedBy this n))
+  (divided-by- [this #^Integer n] (.dividedBy this n))
+
+  org.joda.time.Minutes
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (multiplied-by- [this #^Integer n] (.multipliedBy this n))
+  (divided-by- [this #^Integer n] (.dividedBy this n)))
 
 (def ^{:doc "DateTimeZone for UTC."}
       utc
@@ -349,17 +361,17 @@
 
 (defn multiplied-by
   "Returns a new Period corresponding to the given Period multiplied by the given integer(s)."
-  ([dt p]
-     (.multipliedBy dt p))
-  ([dt p & ps]
-     (reduce #(.multipliedBy %1 %2) (.multipliedBy dt p) ps)))
+  ([dt n]
+     (multiplied-by- dt n))
+  ([dt n & xs]
+     (reduce #(multiplied-by- %1 %2) (multiplied-by- dt n) xs)))
 
 (defn divided-by
   "Returns a new Period corresponding to the given Period divided by the given integer(s)."
-  ([dt p]
-     (.dividedBy dt p))
-  ([dt p & ps]
-     (reduce #(.dividedBy %1 %2) (.dividedBy dt p) ps)))
+  ([dt n]
+     (divided-by- dt n))
+  ([dt n & xs]
+     (reduce #(divided-by- %1 %2) (divided-by- dt n) xs)))
 
 (defn ago
   "Returns a DateTime a supplied period before the present.
