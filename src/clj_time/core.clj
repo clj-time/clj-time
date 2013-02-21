@@ -94,8 +94,8 @@
   (minute [this]   "Return the minute of hour component of the given date/time.")
   (sec [this]   "Return the second of minute component of the given date/time.")
   (milli [this]   "Return the millisecond of second component of the given date/time.")
-  (after? [this that] "Returns true if ReadableDateTime dt-a is strictly after date/time dt-b.")
-  (before? [this that] "Returns true if ReadableDateTime dt-a is strictly before date/time dt-b.")
+  (after? [this that] "Returns true if ReadableDateTime 'this' is strictly after date/time 'that'.")
+  (before? [this that] "Returns true if ReadableDateTime 'this' is strictly before date/time 'that'.")
   (plus- [this #^ReadablePeriod period]
     "Returns a new date/time corresponding to the given date/time moved forwards by the given Period(s).")
   (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s)."))
