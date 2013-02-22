@@ -162,13 +162,6 @@ Format an obj using a formatter in \*local-formatters\* corresponding to the for
 
     => (format-local-time (local-now) :basic-date-time)
 
-## Installation
-
-`clj-time` is available as a Maven artifact via [Clojars](http://clojars.org/clj-time).
-
-Current stable build dependency:
-
-    [clj-time "0.4.4"]
 
 ## Development
 
