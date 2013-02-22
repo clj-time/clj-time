@@ -2,6 +2,35 @@
 
 A date and time library for Clojure, wrapping the [Joda Time](http://joda-time.sourceforge.net/) library.
 
+## Artifacts
+
+`clj-time` artifacts are [released to Clojars](https://clojars.org/clj-time/clj-time).
+
+If you are using Maven, add the following repository definition to your `pom.xml`:
+
+``` xml
+<repository>
+  <id>clojars.org</id>
+  <url>http://clojars.org/repo</url>
+</repository>
+```
+
+### The Most Recent Release
+
+With Leiningen:
+
+    [clj-time "0.4.4"]
+
+
+With Maven:
+
+    <dependency>
+      <groupId>clj-time</groupId>
+      <artifactId>clj-time</artifactId>
+      <version>0.4.4</version>
+    </dependency>
+
+
 ## Usage
 
 The main namespace for date-time operations in the `clj-time` library is `clj-time.core`.
