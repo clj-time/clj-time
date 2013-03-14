@@ -29,7 +29,8 @@
   (:use [clojure.set :only (difference)])
   (:use clj-time.core)
   (:import (java.util Locale)
-           (org.joda.time Chronology DateTime LocalDateTime DateTimeZone)
+           (org.joda.time Chronology DateTime DateTimeZone Interval LocalDateTime
+                          Period PeriodType)
            (org.joda.time.format DateTimeFormat DateTimeFormatter DateTimePrinter
                                  DateTimeFormatterBuilder DateTimeParser
                                  ISODateTimeFormat)))
@@ -186,3 +187,43 @@
     (doseq [p (sort printers)]
       (let [fmt (formatters p)]
         (printf "%-40s%s\n" p (unparse fmt dt))))))
+
+(defprotocol Mappable
+  (instant->map [instant] "Returns a map representation of the given instant.
+                          It will contain the following keys: :years, :months,
+                          :days, :hours, :minutes and :seconds."))
+
+(defn- to-map [years months days hours minutes seconds]
+  {:years   years
+   :months  months
+   :days    days
+   :hours   hours
+   :minutes minutes
+   :seconds seconds})
+
+(extend-protocol Mappable
+  DateTime
+  (instant->map [dt]
+    (to-map
+      (.getYear dt)
+      (.getMonthOfYear dt)
+      (.getDayOfMonth dt)
+      (.getHourOfDay dt)
+      (.getMinuteOfHour dt)
+      (.getSecondOfMinute dt))))
+
+(extend-protocol Mappable
+  Period
+  (instant->map [period]
+    (to-map
+      (.getYears period)
+      (.getMonths period)
+      (.getDays period)
+      (.getHours period)
+      (.getMinutes period)
+      (.getSeconds period))))
+
+(extend-protocol Mappable
+  Interval
+  (instant->map [it]
+    (instant->map (.toPeriod it (PeriodType/yearMonthDayTime)))))
