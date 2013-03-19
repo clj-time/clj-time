@@ -5,7 +5,7 @@
         clj-time.core))
 
 (deftest test-now
-  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1) 
+  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1)
                                 (now)))))
 
 (deftest test-today-at-midnight
