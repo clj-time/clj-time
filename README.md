@@ -82,6 +82,14 @@ If on the other hand you want a given absolute instant in time in a different ti
 
 In addition to `time-zone-for-offset`, you can use the `time-zone-for-id` and `default-time-zone` functions and the `utc` Var to construct or get `DateTimeZone` instances.
 
+If you only want a date with no time component, consider using the `local-date` and `today` functions.
+These return `LocalDate` instances that do not have time components (and thus don't suffer from timezone-related shifting).
+
+``` clj
+=> (local-date 2013 3 20)
+#<LocalDate 2013-03-20>
+```
+
 The functions `after?` and `before?` determine the relative position of two
 DateTime instances:
 

@@ -10,7 +10,7 @@
   (:refer-clojure :exclude [extend])
   (:use clj-time.core)
   (:require [clj-time.format :as time-fmt])
-  (:import (org.joda.time DateTime DateTimeZone DateMidnight YearMonth))
+  (:import (org.joda.time DateTime DateTimeZone DateMidnight YearMonth LocalDate))
   (:import java.util.Date java.sql.Timestamp))
 
 (defprotocol ICoerce
@@ -76,6 +76,12 @@
   (if-let [dt (to-date-time obj)]
     (Timestamp. (.getMillis dt))))
 
+(defn to-local-date
+  "Convert `obj` to a org.joda.time.LocalDate instance"
+  [obj]
+  (if-let [dt (to-date-time obj)]
+    (LocalDate. (.getMillis (from-time-zone dt (default-time-zone))))))
+
 (extend-protocol ICoerce
   nil
   (to-date-time [_]
@@ -101,6 +107,10 @@
   (to-date-time [year-month]
     (date-time (year year-month) (month year-month)))
 
+  LocalDate
+  (to-date-time [local-date]
+    (date-time (year local-date) (month local-date) (day local-date)))
+
   Integer
   (to-date-time [integer]
     (from-long (long integer)))
@@ -116,4 +126,3 @@
   Timestamp
   (to-date-time [timestamp]
     (from-date timestamp)))
-

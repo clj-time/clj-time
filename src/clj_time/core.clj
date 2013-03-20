@@ -82,13 +82,13 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight YearMonth DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
+  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight YearMonth LocalDate DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
 
 (defprotocol DateTimeProtocol
   "Interface for various date time functions"
   (year [this] "Return the year component of the given date/time.")
   (month [this]   "Return the month component of the given date/time.")
-  (day [this]   "Return the day of month component of the given date/time.") 
+  (day [this]   "Return the day of month component of the given date/time.")
   (day-of-week [this]   "Return the day of week component of the given date/time. Monday is 1 and Sunday is 7")
   (hour [this]   "Return the hour of day component of the given date/time. A time of 12:01am will have an hour component of 0.")
   (minute [this]   "Return the minute of hour component of the given date/time.")
@@ -146,6 +146,16 @@
   org.joda.time.YearMonth
   (year [this] (.getYear this))
   (month [this] (.getMonthOfYear this))
+  (after? [this #^ReadablePartial that] (.isAfter this that))
+  (before? [this #^ReadablePartial that] (.isBefore this that))
+  (plus- [this #^ReadablePeriod period] (.plus this period))
+  (minus- [this #^ReadablePeriod period] (.minus this period))
+
+  org.joda.time.LocalDate
+  (year [this] (.getYear this))
+  (month [this] (.getMonthOfYear this))
+  (day [this] (.getDayOfMonth this))
+  (day-of-week [this] (.getDayOfWeek this))
   (after? [this #^ReadablePartial that] (.isAfter this that))
   (before? [this #^ReadablePartial that] (.isBefore this that))
   (plus- [this #^ReadablePeriod period] (.plus this period))
@@ -233,6 +243,18 @@
      (year-month year 1))
   ([#^Integer year #^Integer month]
      (YearMonth. year month)))
+
+(defn #^org.joda.time.LocalDate local-date
+  "Constructs and returns a new LocalDate.
+   Specify the year, month, and day. Does not deal with timezones."
+  [#^Integer year #^Integer month #^Integer day]
+  (LocalDate. year month day))
+
+(defn #^org.joda.time.LocalDate today
+  "Constructs and returns a new LocalDate representing today's date.
+   LocalDate objects do not deal with timezones at all."
+  []
+  (LocalDate.))
 
 (defn time-zone-for-offset
   "Returns a DateTimeZone for the given offset, specified either in hours or

@@ -79,6 +79,17 @@
     (is (= 1986 (year   d)))
     (is (= 10   (month  d)))))
 
+(deftest test-local-date-and-accessors
+  (let [d (local-date 2013 3 19)]
+    (is (= 2013 (year   d)))
+    (is (= 3    (month  d)))
+    (is (= 19   (day    d)))
+    (is (= 2    (day-of-week d)))))
+
+(deftest test-today
+  (is (= (local-date 2013 4 20) (do-at (from-time-zone (date-time 2013 4 20) (default-time-zone))
+                                  (today)))))
+
 (deftest test-day-of-week
   (let [d (date-time 2010 4 24)]
     (is (= 6 (day-of-week d))))
