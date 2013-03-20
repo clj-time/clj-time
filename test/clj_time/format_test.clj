@@ -58,6 +58,24 @@
            (unparse-local (formatter-local "yyyyMMdd'T'HHmmss.SSS")
                     (local-date-time 2010 3 11 17 49 20 881))))))
 
+(deftest test-local-date-parse
+  (is (= (local-date 2010 10 11)
+         (parse-local-date "2010-10-11T00:00:00")))
+  (let [fmt (formatters :date)]
+    (is (= (local-date 2010 3 11)
+           (parse-local-date fmt "2010-03-11"))))
+  (let [fmt (formatters :basic-date-time)]
+    (is (= (local-date 2010 3 11)
+           (parse-local-date fmt "20100311T000000.000Z")))))
+
+(deftest test-local-date-unparse
+  (let [fmt (formatters :date)]
+    (is (= "2010-03-11"
+           (unparse-local-date fmt (local-date 2010 3 11)))))
+  (let [fmt (formatters :basic-date-time)]
+    (is (= "20100311T000000.000"
+           (unparse-local-date fmt (local-date-time 2010 3 11 00 00 00 000))))))
+
 (deftest test-formatter-modifiers
   (let [fmt (formatter "YYYY-MM-dd hh:mm z" (time-zone-for-id "America/Chicago"))]
     (is (= "2010-03-11 11:49 CST"
