@@ -80,7 +80,7 @@
   "Convert `obj` to a org.joda.time.LocalDate instance"
   [obj]
   (if-let [dt (to-date-time obj)]
-    (LocalDate. (.getMillis dt))))
+    (LocalDate. (.getMillis (from-time-zone dt (default-time-zone))))))
 
 (extend-protocol ICoerce
   nil
@@ -126,4 +126,3 @@
   Timestamp
   (to-date-time [timestamp]
     (from-date timestamp)))
-
