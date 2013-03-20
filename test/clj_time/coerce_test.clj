@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [extend])
   (:use clojure.test)
   (:use (clj-time core coerce))
-  (:import java.util.Date java.sql.Timestamp))
+  (:import java.util.Date java.sql.Timestamp org.joda.time.LocalDate))
 
 (deftest test-from-date
   (let [dt (from-long 893462400000)
@@ -26,6 +26,10 @@
 (deftest test-from-year-month
   (is (= (to-date-time (year-month 1998 4))
          (date-time 1998 4))))
+
+(deftest test-from-local-date
+  (is (= (to-date-time (local-date 2013 03 20))
+         (date-time 2013 03 20))))
 
 (deftest test-to-date
   (is (nil? (to-date nil)))
@@ -106,3 +110,17 @@
   (is (= (Timestamp. 893462400000) (to-timestamp 893462400000)))
   (is (= (Timestamp. 893462400000) (to-timestamp (Timestamp. 893462400000))))
   (is (= (Timestamp. 893462400000) (to-timestamp "1998-04-25T00:00:00.000Z"))))
+
+(deftest test-to-local-date
+  (is (nil? (to-local-date nil)))
+  (is (nil? (to-local-date "")))
+  (is (nil? (to-local-date "x")))
+  (is (= (LocalDate. 893462400000) (to-local-date (date-time 1998 4 25))))
+  (is (= (LocalDate. 893462400000) (to-local-date (date-midnight 1998 4 25))))
+  (is (= (LocalDate. 893462400000) (to-local-date (Date. 893462400000))))
+  (is (= (LocalDate. 893462400000) (to-local-date (java.sql.Date. 893462400000))))
+  (is (= (LocalDate. (long 0)) (to-local-date 0)))
+  (is (= (LocalDate. 893462400000) (to-local-date 893462400000)))
+  (is (= (LocalDate. 893462400000) (to-local-date (Timestamp. 893462400000))))
+  (is (= (LocalDate. 893462400000) (to-local-date "1998-04-25T00:00:00.000Z")))
+  )
