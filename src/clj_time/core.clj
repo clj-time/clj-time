@@ -82,7 +82,9 @@
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
   (:refer-clojure :exclude [extend])
-  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime DateMidnight YearMonth LocalDate DateTimeZone Period PeriodType Interval Years Months Weeks Days Hours Minutes Seconds LocalDateTime)))
+  (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime
+                          DateMidnight YearMonth LocalDate DateTimeZone Period PeriodType Interval
+                          Years Months Weeks Days Hours Minutes Seconds LocalDateTime MutableDateTime)))
 
 (defprotocol DateTimeProtocol
   "Interface for various date time functions"
@@ -184,12 +186,12 @@
    they will default to 1."
   ([year]
     (date-midnight year 1 1))
-  ([year month]
+  ([^long year ^long month]
     (date-midnight year month 1))
   ([^Long year ^Long month ^Long day]
     (DateMidnight. year month day #^DateTimeZone utc)))
 
-(defn #^org.joda.time.DateTime date-time
+(defn ^DateTime date-time
   "Constructs and returns a new DateTime in UTC.
    Specify the year, month of year, day of month, hour of day, minute if hour,
    second of minute, and millisecond of second. Note that month and day are
@@ -497,5 +499,39 @@
   [val]
   (instance? Seconds val))
 
-(defn mins-ago [d]
+(defn mins-ago
+  [d]
   (in-minutes (interval d (now))))
+
+
+(defn ^DateTime last-day-of-the-month
+  ([^DateTime dt]
+     (last-day-of-the-month (.getYear dt) (.getMonthOfYear dt)))
+  ([^long year ^long month]
+     (-> ^DateTime (date-time year month) .dayOfMonth .withMaximumValue)))
+
+(defn number-of-days-in-the-month
+  (^long [^DateTime dt]
+         (number-of-days-in-the-month (.getYear dt) (.getMonthOfYear dt)))
+  (^long [^long year ^long month]
+         (-> ^DateTime (last-day-of-the-month year month) .getDayOfMonth)))
+
+(defn ^DateTime first-day-of-the-month
+  ([^DateTime dt]
+     (first-day-of-the-month (.getYear dt) (.getMonthOfYear dt)))
+  ([^long year ^long month]
+     (-> ^DateTime (date-time year month) .dayOfMonth .withMinimumValue)))
+
+
+(defn ^DateTime today-at
+  ([^long hours ^long minutes ^long seconds ^long millis]
+     (let [^MutableDateTime mdt (-> ^DateTime (now) .toMutableDateTime)]
+       (.toDateTime (doto mdt
+                      (.setHourOfDay      hours)
+                      (.setMinuteOfHour   minutes)
+                      (.setSecondOfMinute seconds)
+                      (.setMillisOfSecond millis)))))
+  ([^long hours ^long minutes ^long seconds]
+     (today-at hours minutes seconds 0))
+  ([^long hours ^long minutes]
+     (today-at hours minutes 0)))
