@@ -1,18 +1,19 @@
 (ns clj-time.core-test
   (:refer-clojure :exclude [extend])
-  (:use [utilize.testutils :only (do-at)]
-        clojure.test
+  (:use clojure.test
         clj-time.core)
   (:import java.util.Date
            org.joda.time.DateTime))
 
 (deftest test-now
-  (is (= (date-time 2010 1 1) (do-at (date-time 2010 1 1) 
-                                (now)))))
+  (is (= (date-time 2010 1 1)
+         (do-at (date-time 2010 1 1) 
+                (now)))))
 
 (deftest test-today-at-midnight
-  (is (= (date-midnight 2010 1 1) (do-at (date-midnight 2010 1 1)
-                                    (today-at-midnight)))))
+  (is (= (date-midnight 2010 1 1)
+         (do-at (date-midnight 2010 1 1)
+                (today-at-midnight)))))
 
 (deftest test-epoch
   (let [e (epoch)]

@@ -84,7 +84,9 @@
   (:refer-clojure :exclude [extend])
   (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime
                           DateMidnight YearMonth LocalDate DateTimeZone Period PeriodType Interval
-                          Years Months Weeks Days Hours Minutes Seconds LocalDateTime MutableDateTime)))
+                          Years Months Weeks Days Hours Minutes Seconds LocalDateTime MutableDateTime
+                          DateTimeUtils)
+           (org.joda.time.base BaseDateTime)))
 
 (defprotocol DateTimeProtocol
   "Interface for various date time functions"
@@ -535,3 +537,15 @@
      (today-at hours minutes seconds 0))
   ([^long hours ^long minutes]
      (today-at hours minutes 0)))
+
+(defn do-at* [^BaseDateTime base-date-time body-fn]
+  (DateTimeUtils/setCurrentMillisFixed (.getMillis base-date-time))
+  (try
+    (body-fn)
+    (finally
+      (DateTimeUtils/setCurrentMillisSystem))))
+
+(defmacro do-at [^BaseDateTime base-date-time & body]
+  "Like clojure.core/do except evalautes the expression at the given date-time"
+  `(do-at* ~base-date-time
+    (fn [] ~@body)))

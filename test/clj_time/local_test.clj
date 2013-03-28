@@ -1,15 +1,14 @@
 (ns clj-time.local-test
   (:use clojure.test clj-time.local
-        [clj-time.core-test :only (when-available when-not-available)]
-        [utilize.testutils :only (do-at)])
+        [clj-time.core-test :only (when-available when-not-available)])
   (:require (clj-time [core :as time] [format :as fmt]))
   (:import (org.joda.time.format ISODateTimeFormat)
            java.util.Date java.sql.Timestamp))
 
 (deftest test-now
   (is (= (time/from-time-zone (time/date-time 2010 1 1) (time/default-time-zone))
-         (do-at (time/from-time-zone (time/date-time 2010 1 1) (time/default-time-zone)) 
-                (local-now)))))
+         (time/do-at (time/from-time-zone (time/date-time 2010 1 1) (time/default-time-zone)) 
+                     (local-now)))))
 
 (deftest test-to-local-date-time
   (is (nil? (to-local-date-time nil)))
