@@ -33,6 +33,10 @@ With Maven:
 </dependency>
 ```
 
+## Bugs and Enhancements
+
+Please open issues against the [official clj-time repo on Github](https://github.com/clj-time/clj-time/issues).
+
 ## Usage
 
 ### clj-time.core
@@ -259,9 +263,9 @@ Running the tests:
 
 ## Documentation
 
-The complete [API documentation](http://seancorfield.github.com/clj-time/doc/index.html) is also available (codox generated).
+The complete [API documentation](http://clj-time.github.com/clj-time/doc/index.html) is also available (codox generated).
 
 ## License
 
-Released under the MIT License: <https://github.com/seancorfield/clj-time/blob/master/MIT-LICENSE.txt>
+Released under the MIT License: <https://github.com/clj-time/clj-time/blob/master/MIT-LICENSE.txt>
 
