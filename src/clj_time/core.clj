@@ -32,13 +32,13 @@
    The date-time constructor always returns times in the UTC time zone. If you
    want a time with the specified fields in a different time zone, use
    from-time-zone:
-   
+
      => (from-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-22T00:00:00.000-02:00>
-   
+
    If on the other hand you want a given absolute instant in time in a
    different time zone, use to-time-zone:
-   
+
      => (to-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-21T22:00:00.000-02:00>
 
@@ -71,10 +71,10 @@
      => (within? (interval (date-time 1986) (date-time 1990))
                  (date-time 1987))
      true
-   
+
    To find the amount of time encompased by an interval, use in-secs and
    in-minutes:
-   
+
      => (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))
      17280
 
@@ -462,10 +462,17 @@
          (and (before? start test) (after? end test)))))
 
 (defn overlaps?
-  "Returns true of the two given Intervals overlap. Note that intervals that
-   satisfy abuts? do not satisfy overlaps?"
-  [#^Interval i-a #^Interval i-b]
-  (.overlaps i-a i-b))
+  "With 2 arguments: Returns true of the two given Intervals overlap.
+   Note that intervals that satisfy abuts? do not satisfy overlaps?
+   With 4 arguments: Returns true if the range specified by start-a and end-a
+   overlaps with the range specified by start-b and end-b."
+  ([#^Interval i-a #^Interval i-b]
+     (.overlaps i-a i-b))
+  ([#^ReadablePartial start-a #^ReadablePartial end-a
+    #^ReadablePartial start-b #^ReadablePartial end-b]
+     (or (and (before? start-b end-a) (after? end-b start-a))
+         (and (after? end-b start-a) (before? start-b end-a))
+         (or (= start-a end-b) (= start-b end-a)))))
 
 (defn abuts?
   "Returns true if Interval i-a abuts i-b, i.e. then end of i-a is exactly the

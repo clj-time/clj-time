@@ -7,7 +7,7 @@
 
 (deftest test-now
   (is (= (date-time 2010 1 1)
-         (do-at (date-time 2010 1 1) 
+         (do-at (date-time 2010 1 1)
                 (now)))))
 
 (deftest test-today-at-midnight
@@ -286,11 +286,25 @@
   (let [d1 (date-time 1985)
         d2 (date-time 1986)
         d3 (date-time 1987)
-        d4 (date-time 1988)]
+        d4 (date-time 1988)
+        ld1 (local-date 2013 1 1)
+        ld2 (local-date 2013 2 5)
+        ld3 (local-date 2013 2 28)
+        ld4 (local-date 2014 1 1)
+        ld5 (local-date 2014 5 6)]
     (is (overlaps? (interval d1 d3) (interval d2 d4)))
     (is (overlaps? (interval d1 d3) (interval d2 d3)))
     (is (not (overlaps? (interval d1 d2) (interval d2 d3))))
-    (is (not (overlaps? (interval d1 d2) (interval d3 d4))))))
+    (is (not (overlaps? (interval d1 d2) (interval d3 d4))))
+    (is (overlaps? ld1 ld3 ld2 ld4))
+    (is (overlaps? ld2 ld4 ld3 ld5))
+    (is (overlaps? ld1 ld5 ld1 ld5))
+    (is (overlaps? ld1 ld5 ld2 ld4))
+    (is (overlaps? ld2 ld4 ld1 ld5))
+    (is (overlaps? ld1 ld2 ld2 ld3))
+    (is (overlaps? ld2 ld3 ld1 ld2))
+    (is (not (overlaps? ld1 ld2 ld3 ld4)))
+    (is (not (overlaps? ld1 ld3 ld4 ld5)))))
 
 (deftest test-abuts?
   (let [d1 (date-time 1985)
