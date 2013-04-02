@@ -45,7 +45,7 @@ The main namespace for date-time operations in the `clj-time` library is `clj-ti
 
 ``` clj
 => (use 'clj-time.core)
-``` 
+```
 
 Create a DateTime instance with date-time, specifying the year, month, day, hour, minute, second, and millisecond:
 
@@ -268,4 +268,3 @@ The complete [API documentation](http://clj-time.github.com/clj-time/doc/index.h
 ## License
 
 Released under the MIT License: <https://github.com/clj-time/clj-time/blob/master/MIT-LICENSE.txt>
-

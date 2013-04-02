@@ -32,13 +32,13 @@
    The date-time constructor always returns times in the UTC time zone. If you
    want a time with the specified fields in a different time zone, use
    from-time-zone:
-   
+
      => (from-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-22T00:00:00.000-02:00>
-   
+
    If on the other hand you want a given absolute instant in time in a
    different time zone, use to-time-zone:
-   
+
      => (to-time-zone (date-time 1986 10 22) (time-zone-for-offset -2))
      #<DateTime 1986-10-21T22:00:00.000-02:00>
 
@@ -71,10 +71,10 @@
      => (within? (interval (date-time 1986) (date-time 1990))
                  (date-time 1987))
      true
-   
+
    To find the amount of time encompased by an interval, use in-secs and
    in-minutes:
-   
+
      => (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))
      17280
 
@@ -448,11 +448,18 @@
   (.getYears (.toPeriod in (years))))
 
 (defn within?
-  "Returns true if the given Interval contains the given ReadableDateTime. Note that
-   if the ReadableDateTime is exactly equal to the end of the interval, this function
-   returns false."
-  [#^Interval i #^ReadableDateTime dt]
-  (.contains i dt))
+  "With 2 arguments: Returns true if the given Interval contains the given
+   ReadableDateTime. Note that if the ReadableDateTime is exactly equal to the
+   end of the interval, this function returns false.
+   With 3 arguments: Returns true if the start ReadablePartial is
+   equal to or before and the end ReadablePartial is equal to or after the test
+   ReadablePartial."
+  ([#^Interval i #^ReadableDateTime dt]
+     (.contains i dt))
+  ([#^ReadablePartial start #^ReadablePartial end #^ReadablePartial test]
+     (or (= start test)
+         (= end test)
+         (and (before? start test) (after? end test)))))
 
 (defn overlaps?
   "Returns true of the two given Intervals overlap. Note that intervals that
