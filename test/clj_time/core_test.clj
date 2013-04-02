@@ -269,11 +269,18 @@
 (deftest test-within?
   (let [d1 (date-time 1985)
         d2 (date-time 1986)
-        d3 (date-time 1987)]
+        d3 (date-time 1987)
+        ld1 (local-date 2013 1 1)
+        ld2 (local-date 2013 2 28)
+        ld3 (local-date 2013 10 5)]
     (is (within? (interval d1 d3) d2))
     (is (not (within? (interval d1 d2) d3)))
     (is (not (within? (interval d1 d2) d2)))
-    (is (not (within? (interval d2 d3) d1)))))
+    (is (not (within? (interval d2 d3) d1)))
+    (is (within? ld1 ld3 ld2))
+    (is (not (within? ld1 ld2 ld3)))
+    (is (not (within? ld3 ld2 ld1)))
+    (is (not (within? ld2 ld3 ld1)))))
 
 (deftest test-overlaps?
   (let [d1 (date-time 1985)
