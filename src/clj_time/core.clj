@@ -448,11 +448,18 @@
   (.getYears (.toPeriod in (years))))
 
 (defn within?
-  "Returns true if the given Interval contains the given ReadableDateTime. Note that
-   if the ReadableDateTime is exactly equal to the end of the interval, this function
-   returns false."
-  [#^Interval i #^ReadableDateTime dt]
-  (.contains i dt))
+  "With 2 arguments: Returns true if the given Interval contains the given
+   ReadableDateTime. Note that if the ReadableDateTime is exactly equal to the
+   end of the interval, this function returns false.
+   With 3 arguments: Returns true if the start ReadablePartial is
+   equal to or before and the end ReadablePartial is equal to or after the test
+   ReadablePartial."
+  ([#^Interval i #^ReadableDateTime dt]
+     (.contains i dt))
+  ([#^ReadablePartial start #^ReadablePartial end #^ReadablePartial test]
+     (or (= start test)
+         (= end test)
+         (and (before? start test) (after? end test)))))
 
 (defn overlaps?
   "Returns true of the two given Intervals overlap. Note that intervals that
