@@ -6,8 +6,7 @@ clj-time.jar
 pom.xml
 *.jar
 *~
-.lein-failures
-.lein-deps-sum
+.lein-*
 checkouts
 .classpath
 .project
