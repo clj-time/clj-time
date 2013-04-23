@@ -172,7 +172,7 @@ To parse dates in multiple formats and format dates in just one format, you can 
 "2012-02-01"
 ```
 
-`clojure-time.core/today-at` returns a moment in time at the given hour, minute and second
+`clj-time.core/today-at` returns a moment in time at the given hour, minute and second
 on the current date:
 
 ``` clojure
