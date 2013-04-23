@@ -24,9 +24,9 @@
   a formatter in *local-formatters* corresponding to the  format-key
   passed in.
 "
-  (require [clj-time.core :as time]
-           [clj-time.coerce :as coerce]
-           [clj-time.format :as fmt])
+  (:require [clj-time.core :as time]
+            [clj-time.coerce :as coerce]
+            [clj-time.format :as fmt])
   (:import (org.joda.time DateTime DateTimeZone)
            (org.joda.time.format DateTimeFormatter)))
 
