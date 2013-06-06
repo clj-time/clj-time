@@ -36,19 +36,22 @@
             (fn [[k #^DateTimeFormatter f]] [k (.withZone f #^DateTimeZone (time/default-time-zone))])
             fmt/formatters)))
 
-(defn local-now []
+(defn local-now
   "Returns a DateTime for the current instant in the default time zone."
+  []
   (DateTime/now #^DateTimeZone (time/default-time-zone)))
 
 (defprotocol ILocalCoerce
   (to-local-date-time [obj] "convert `obj` to a local Joda DateTime instance retaining time fields."))
 
-(defn- as-local-date-time-from-time-zone [obj]
+(defn- as-local-date-time-from-time-zone
   "Coerce to date-time in the default time zone retaining time fields."
+  [obj]
   (-> obj coerce/to-date-time (time/from-time-zone (time/default-time-zone))))
 
-(defn- as-local-date-time-to-time-zone [obj]
+(defn- as-local-date-time-to-time-zone
   "Coerce to date-time in the default time zone."
+  [obj]
   (-> obj coerce/to-date-time (time/to-time-zone (time/default-time-zone))))
 
 (defn- from-local-string
@@ -94,9 +97,10 @@
   (to-local-date-time [timestamp]
     (as-local-date-time-to-time-zone timestamp)))
 
-(defn format-local-time [obj format-key]
+(defn format-local-time
   "Format obj as local time using the local formatter corresponding
    to format-key."
+  [obj format-key]
   (when-let [dt (to-local-date-time obj)]
     (when-let [fmt (format-key *local-formatters*)]
       (fmt/unparse fmt dt))))

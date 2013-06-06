@@ -169,16 +169,19 @@
       utc
   (DateTimeZone/UTC))
 
-(defn now []
+(defn now
   "Returns a DateTime for the current instant in the UTC time zone."
+  []
   (DateTime. #^DateTimeZone utc))
 
-(defn today-at-midnight []
+(defn today-at-midnight
   "Returns a DateMidnight for today at midnight in the UTC time zone."
+  []
   (DateMidnight. #^DateTimeZone utc))
 
-(defn epoch []
+(defn epoch
   "Returns a DateTime for the begining of the Unix epoch in the UTC time zone."
+  []
   (DateTime. (long 0) #^DateTimeZone utc))
 
 (defn date-midnight
@@ -273,8 +276,9 @@
    'America/Matamoros'."
   (DateTimeZone/forID id))
 
-(defn default-time-zone []
+(defn default-time-zone
   "Returns the default DateTimeZone for the current environment."
+  []
   (DateTimeZone/getDefault))
 
 (defn #^org.joda.time.DateTime
@@ -559,7 +563,8 @@
     (finally
       (DateTimeUtils/setCurrentMillisSystem))))
 
-(defmacro do-at [^BaseDateTime base-date-time & body]
+(defmacro do-at
   "Like clojure.core/do except evalautes the expression at the given date-time"
+  [^BaseDateTime base-date-time & body]
   `(do-at* ~base-date-time
     (fn [] ~@body)))
