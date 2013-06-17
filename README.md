@@ -201,7 +201,9 @@ For example, to convert a Joda `DateTime` to and from a Java `long`:
 #<DateTime 1998-04-25T00:00:00.000Z>
 ```
 
-There are also conversions to and from `java.util.Date` (`to-date` and `from-date`), `java.sql.Date` (`to-sql-date` and `from-sql-date`) and several other types.
+There are also conversions to and from `java.util.Date` (`to-date` and
+`from-date`), `java.sql.Date` (`to-sql-date` and `from-sql-date`),
+`java.sql.Timestamp` (`to-sql-time` and `from-sql-time`) and several other types.
 
 ### clj-time.local
 

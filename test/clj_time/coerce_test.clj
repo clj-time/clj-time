@@ -16,6 +16,12 @@
     (is (instance? java.sql.Date d))
     (is (= dt (from-sql-date d)))))
 
+(deftest test-from-sql-time
+  (let [dt (from-long 893462400000)
+        d  (to-sql-time dt)]
+    (is (instance? java.sql.Timestamp d))
+    (is (= dt (from-sql-time d)))))
+
 (deftest test-from-long
   (is (= (date-time 1998 4 25) (from-long 893462400000))))
 
@@ -56,6 +62,19 @@
   (is (= (java.sql.Date. 893462400000) (to-sql-date 893462400000)))
   (is (= (java.sql.Date. 893462400000) (to-sql-date (Timestamp. 893462400000))))
   (is (= (java.sql.Date. 893462400000) (to-sql-date "1998-04-25T00:00:00.000Z"))))
+
+(deftest test-to-sql-time
+  (is (nil? (to-sql-time nil)))
+  (is (nil? (to-sql-time "")))
+  (is (nil? (to-sql-time "x")))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time (date-time 1998 4 25))))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time (date-midnight 1998 4 25))))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time (Date. 893462400000))))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time (java.sql.Timestamp. 893462400000))))
+  (is (= (java.sql.Timestamp. (long 0)) (to-sql-time 0)))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time 893462400000)))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time (Timestamp. 893462400000))))
+  (is (= (java.sql.Timestamp. 893462400000) (to-sql-time "1998-04-25T00:00:00.000Z"))))
 
 (deftest test-to-date-time
   (is (nil? (to-date-time nil)))
