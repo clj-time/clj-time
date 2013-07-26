@@ -135,7 +135,8 @@
      :year (ISODateTimeFormat/year)
      :year-month (ISODateTimeFormat/yearMonth)
      :year-month-day (ISODateTimeFormat/yearMonthDay)
-     :rfc822 (formatter "EEE, dd MMM yyyy HH:mm:ss Z")})))
+     :rfc822 (formatter "EEE, dd MMM yyyy HH:mm:ss Z")
+     :mysql (formatter "yyyy-MM-dd HH:mm:ss")})))
 
 (def ^{:private true} parsers
   #{:date-element-parser :date-opt-time :date-parser :date-time-parser

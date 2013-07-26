@@ -103,6 +103,12 @@
     (is (= "2012-02-01 22:15"
            (unparse fmt (date-time 2012 2 1 22 15))))))
 
+(deftest test-mysql-format
+  (are [expectation mysql] (= (parse mysql) expectation)
+       (date-time 2013 1 1 0 0 0) "2013-01-01 00:00:00"
+       (date-time 1991 1 13 11 30 45) "1991-1-13 11:30:45"
+       (date-time 2013 8 3 12 11 13) "2013-08-03 12:11:13"))
+
 (deftest test-instant->map-from-interval
   (let [it (interval (date-time 1986 9 2 0 0 2)  (date-time 1986 11 30 2 5 12))]
     (is (= (instant->map it)
