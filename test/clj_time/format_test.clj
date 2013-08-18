@@ -1,5 +1,5 @@
 (ns clj-time.format-test
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use clojure.test
         (clj-time core format))
   (:import [org.joda.time DateTimeZone]

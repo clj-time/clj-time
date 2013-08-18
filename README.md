@@ -120,7 +120,7 @@ instances. Construct one using `interval`, then query them using `within?`,
 true
 ```
 
-The `in-secs` and `in-minutes` functions can be used to describe intervals in the corresponding temporal units:
+The `in-seconds` and `in-minutes` functions can be used to describe intervals in the corresponding temporal units:
 
 ``` clj
 => (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))

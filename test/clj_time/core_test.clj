@@ -1,5 +1,5 @@
 (ns clj-time.core-test
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use clojure.test
         clj-time.core)
   (:import java.util.Date
@@ -18,7 +18,7 @@
 (deftest test-epoch
   (let [e (epoch)]
     (is (= 1970 (year e)))
-    (is (= 0 (sec e)))))
+    (is (= 0 (second e)))))
 
 (deftest test-date-time-and-accessors
   (let [d (date-time 1986)]
@@ -27,7 +27,7 @@
     (is (= 1    (day    d)))
     (is (= 0    (hour   d)))
     (is (= 0    (minute d)))
-    (is (= 0    (sec    d)))
+    (is (= 0    (second d)))
     (is (= 0    (milli  d))))
   (let [d (date-time 1986 10 14 4 3 2 1)]
     (is (= 1986 (year   d)))
@@ -35,7 +35,7 @@
     (is (= 14   (day    d)))
     (is (= 4    (hour   d)))
     (is (= 3    (minute d)))
-    (is (= 2    (sec    d)))
+    (is (= 2    (second d)))
     (is (= 1    (milli  d)))))
 
 (deftest test-date-midnight-and-accessors
@@ -45,7 +45,7 @@
     (is (= 1    (day    d)))
     (is (= 0    (hour   d)))
     (is (= 0    (minute d)))
-    (is (= 0    (sec    d)))
+    (is (= 0    (second    d)))
     (is (= 0    (milli  d))))
   (let [d (date-midnight 1986 10 14)]
     (is (= 1986 (year   d)))
@@ -53,7 +53,7 @@
     (is (= 14   (day    d)))
     (is (= 0    (hour   d)))
     (is (= 0    (minute d)))
-    (is (= 0    (sec    d)))
+    (is (= 0    (second d)))
     (is (= 0    (milli  d)))))
 
 (deftest test-local-date-time-and-accessors
@@ -63,7 +63,7 @@
     (is (= 1    (day    d)))
     (is (= 0    (hour   d)))
     (is (= 0    (minute d)))
-    (is (= 0    (sec    d)))
+    (is (= 0    (second d)))
     (is (= 0    (milli  d))))
   (let [d (date-time 1986 10 14 4 3 2 1)]
     (is (= 1986 (year   d)))
@@ -71,7 +71,7 @@
     (is (= 14   (day    d)))
     (is (= 4    (hour   d)))
     (is (= 3    (minute d)))
-    (is (= 2    (sec    d)))
+    (is (= 2    (second d)))
     (is (= 1    (milli  d)))))
 
 (deftest test-year-month-and-accessors
@@ -144,7 +144,7 @@
            (days 13)
            (hours 4)
            (minutes 3)
-           (secs 2)
+           (seconds 2)
            (millis 1))))
   (is (= (date-time 1986 1 8)
          (plus (date-time 1986 1 1) (weeks 1)))))
@@ -179,7 +179,7 @@
            (days 13)
            (hours 4)
            (minutes 3)
-           (secs 2)
+           (seconds 2)
            (millis 1))))
   (is (= (local-date-time 1986 1 8)
          (plus (local-date-time 1986 1 1) (weeks 1)))))
@@ -255,8 +255,8 @@
     (is (= 20      (in-days p)))
     (is (= 489     (in-hours p)))
     (is (= 29397   (in-minutes p)))
-    (is (= 1763822 (in-secs p)))
-    (is (= 1763822000 (in-msecs p)))))
+    (is (= 1763822 (in-seconds p)))
+    (is (= 1763822000 (in-millis p)))))
 
 (deftest test-interval-in-bigger
   (let [p (interval (date-time 1986 10 14 12 5 4) (date-time 1987 11 3  22 2 6))]
@@ -335,7 +335,7 @@
   (is (minutes? (minutes 2))))
 
 (deftest test-secs?
-  (is (secs? (secs 2))))
+  (is (seconds? (seconds 2))))
 
 (deftest mins-ago-test
   (is (= 5 (mins-ago (minus (now) (minutes 5))))))

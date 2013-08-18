@@ -7,7 +7,7 @@
 
      => (from-long 893462400000)
      #<DateTime 1998-04-25T00:00:00.000Z>"
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use clj-time.core)
   (:require [clj-time.format :as time-fmt])
   (:import (org.joda.time DateTime DateTimeZone DateMidnight YearMonth LocalDate))
@@ -56,6 +56,12 @@
   [obj]
   (if-let [dt (to-date-time obj)]
     (.getMillis dt)))
+
+(defn to-epoch
+  "Convert `obj` to Unix epoch."
+  [obj]
+  (let [millis (to-long obj)]
+    (and millis (/ millis 1000))))
 
 (defn to-date
   "Convert `obj` to a Java Date instance."

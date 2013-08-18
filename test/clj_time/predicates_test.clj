@@ -1,5 +1,5 @@
 (ns clj-time.predicates-test
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use clojure.test)
   (:use [clj-time core predicates]))
 

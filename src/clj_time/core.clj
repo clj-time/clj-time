@@ -20,7 +20,7 @@
 
    Get the current time with (now) and the start of the Unix epoch with (epoch).
 
-   Once you have a date-time, use accessors like hour and sec to access the
+   Once you have a date-time, use accessors like hour and second to access the
    corresponding fields:
 
      => (hour (date-time 1986 10 14 22))
@@ -72,7 +72,7 @@
                  (date-time 1987))
      true
 
-   To find the amount of time encompased by an interval, use in-secs and
+   To find the amount of time encompased by an interval, use in-seconds and
    in-minutes:
 
      => (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))
@@ -81,12 +81,15 @@
    Note that all functions in this namespace work with Joda objects or ints. If
    you need to print or parse date-times, see clj-time.format. If you need to
    ceorce date-times to or from other types, see clj-time.coerce."
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:import (org.joda.time ReadablePartial ReadableDateTime ReadableInstant ReadablePeriod DateTime
                           DateMidnight YearMonth LocalDate DateTimeZone Period PeriodType Interval
                           Years Months Weeks Days Hours Minutes Seconds LocalDateTime MutableDateTime
                           DateTimeUtils)
            (org.joda.time.base BaseDateTime)))
+
+(defn deprecated [message]
+  (println "DEPRECATION WARNING: " message))
 
 (defprotocol DateTimeProtocol
   "Interface for various date time functions"
@@ -97,12 +100,14 @@
   (hour [this]   "Return the hour of day component of the given date/time. A time of 12:01am will have an hour component of 0.")
   (minute [this]   "Return the minute of hour component of the given date/time.")
   (sec [this]   "Return the second of minute component of the given date/time.")
+  (second [this]   "Return the second of minute component of the given date/time.")
   (milli [this]   "Return the millisecond of second component of the given date/time.")
   (after? [this that] "Returns true if ReadableDateTime 'this' is strictly after date/time 'that'.")
   (before? [this that] "Returns true if ReadableDateTime 'this' is strictly before date/time 'that'.")
   (plus- [this #^ReadablePeriod period]
     "Returns a new date/time corresponding to the given date/time moved forwards by the given Period(s).")
-  (minus- [this #^ReadablePeriod period]  "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s)."))
+  (minus- [this #^ReadablePeriod period]
+    "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s)."))
 
 (extend-protocol DateTimeProtocol
   org.joda.time.DateTime
@@ -112,7 +117,10 @@
   (day-of-week [this] (.getDayOfWeek this))
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
-  (sec [this] (.getSecondOfMinute this))
+  (sec [this]
+    (deprecated "sec is being deprecated in favor of second")
+    (.getSecondOfMinute this))
+  (second [this] (.getSecondOfMinute this))
   (milli [this] (.getMillisOfSecond this))
   (after? [this #^ReadableInstant that] (.isAfter this that))
   (before? [this #^ReadableInstant that] (.isBefore this that))
@@ -126,7 +134,10 @@
   (day-of-week [this] (.getDayOfWeek this))
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
-  (sec [this] (.getSecondOfMinute this))
+  (sec [this]
+    (deprecated "sec is being deprecated in favor of second")
+    (.getSecondOfMinute this))
+  (second [this] (.getSecondOfMinute this))
   (milli [this] (.getMillisOfSecond this))
   (after? [this #^ReadableInstant that] (.isAfter this that))
   (before? [this #^ReadableInstant that] (.isBefore this that))
@@ -140,7 +151,10 @@
   (day-of-week [this] (.getDayOfWeek this))
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
-  (sec [this] (.getSecondOfMinute this))
+  (sec [this]
+    (deprecated "sec is being deprecated in favor of second")
+    (.getSecondOfMinute this))
+  (second [this] (.getSecondOfMinute this))
   (milli [this] (.getMillisOfSecond this))
   (after? [this #^ReadablePartial that] (.isAfter this that))
   (before? [this #^ReadablePartial that] (.isBefore this that))
@@ -271,9 +285,10 @@
   ([hours minutes]
    (DateTimeZone/forOffsetHoursMinutes hours minutes)))
 
-(defn time-zone-for-id [#^String id]
+(defn time-zone-for-id
   "Returns a DateTimeZone for the given ID, which must be in long form, e.g.
    'America/Matamoros'."
+  [#^String id]
   (DateTimeZone/forID id))
 
 (defn default-time-zone
@@ -345,7 +360,7 @@
   ([#^Integer n]
      (Minutes/minutes n)))
 
-(defn secs
+(defn seconds
   "Given a number, returns a Period representing that many seconds.
    Without an argument, returns a PeriodType representing only seconds."
   ([]
@@ -367,7 +382,7 @@
   ([dt #^ReadablePeriod p]
      (plus- dt p))
   ([dt p & ps]
-     (reduce #(plus- %1 %2) (plus- dt p) ps)))
+     (reduce plus- (plus- dt p) ps)))
 
 (defn minus
   "Returns a new date/time object corresponding to the given date/time moved backwards by
@@ -375,7 +390,7 @@
   ([dt #^ReadablePeriod p]
    (minus- dt p))
   ([dt p & ps]
-     (reduce #(minus- %1 %2) (minus- dt p) ps)))
+     (reduce minus- (minus- dt p) ps)))
 
 (defn ago
   "Returns a DateTime a supplied period before the present.
@@ -411,15 +426,21 @@
   [#^Interval in & by]
   (.withEnd in (apply plus (end in) by)))
 
-(defn in-msecs
+(defn in-millis
   "Returns the number of milliseconds in the given Interval."
   [#^Interval in]
   (.toDurationMillis in))
 
-(defn in-secs
+(defn in-msecs
+  "DEPRECATED: Returns the number of milliseconds in the given Interval."
+  [#^Interval in]
+  (deprecated "DEPRECATED: use in-millis")
+  (in-millis in))
+
+(defn in-seconds
   "Returns the number of standard seconds in the given Interval."
   [#^Interval in]
-  (.getSeconds (.toPeriod in (secs))))
+  (.getSeconds (.toPeriod in (seconds))))
 
 (defn in-minutes
   "Returns the number of standard minutes in the given Interval."
@@ -514,7 +535,7 @@
   [val]
   (instance? Minutes val))
 
-(defn secs?
+(defn seconds?
   "Returns true if the given value is an instance of Seconds"
   [val]
   (instance? Seconds val))
@@ -534,7 +555,7 @@
   (^long [^DateTime dt]
          (number-of-days-in-the-month (.getYear dt) (.getMonthOfYear dt)))
   (^long [^long year ^long month]
-         (-> ^DateTime (last-day-of-the-month year month) .getDayOfMonth)))
+         (.getDayOfMonth ^DateTime (last-day-of-the-month year month))))
 
 (defn ^DateTime first-day-of-the-month
   ([^DateTime dt]
@@ -545,7 +566,7 @@
 
 (defn ^DateTime today-at
   ([^long hours ^long minutes ^long seconds ^long millis]
-     (let [^MutableDateTime mdt (-> ^DateTime (now) .toMutableDateTime)]
+     (let [^MutableDateTime mdt (.toMutableDateTime ^DateTime (now))]
        (.toDateTime (doto mdt
                       (.setHourOfDay      hours)
                       (.setMinuteOfHour   minutes)

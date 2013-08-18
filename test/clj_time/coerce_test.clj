@@ -1,5 +1,5 @@
 (ns clj-time.coerce-test
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use clojure.test)
   (:use (clj-time core coerce))
   (:import java.util.Date java.sql.Timestamp org.joda.time.LocalDate))
@@ -103,6 +103,20 @@
   (is (= 893462400000 (to-long 893462400000)))
   (is (= 893462400000 (to-long (Timestamp. 893462400000))))
   (is (= 893462400000 (to-long "1998-04-25T00:00:00.000Z"))))
+
+(deftest test-to-epoch
+  (is (nil? (to-epoch nil)))
+  (is (nil? (to-epoch "")))
+  (is (nil? (to-epoch "x")))
+  (is (= 893462400 (to-epoch (date-time 1998 4 25))))
+  (is (= 0 (to-epoch (date-midnight 1970))))
+  (is (= (to-epoch (date-time 1993 3 15)) (to-epoch (date-midnight 1993 3 15))))
+  (is (= 893462400 (to-epoch (Date. 893462400000))))
+  (is (= 893462400 (to-epoch (java.sql.Date. 893462400000))))
+  (is (= (long 0) (to-epoch 0)))
+  (is (= 893462400 (to-epoch 893462400000)))
+  (is (= 893462400 (to-epoch (Timestamp. 893462400000))))
+  (is (= 893462400 (to-epoch "1998-04-25T00:00:00.000Z"))))
 
 (deftest test-to-string
   (is (nil? (to-string nil)))

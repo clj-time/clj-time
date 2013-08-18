@@ -25,7 +25,7 @@
    instance in UTC. A formatter can be modified to different timezones, locales,
    etc with the functions with-zone, with-locale, with-chronology, and
    with-pivot-year."
-  (:refer-clojure :exclude [extend])
+  (:refer-clojure :exclude [extend second])
   (:use [clojure.set :only (difference)])
   (:use clj-time.core)
   (:import (java.util Locale)
