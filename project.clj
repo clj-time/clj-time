@@ -1,4 +1,4 @@
-(defproject clj-time/clj-time "0.5.2-SNAPSHOT"
+(defproject clj-time/clj-time "0.6.0"
   :description "A date and time library for Clojure, wrapping Joda Time."
   :url "https://github.com/clj-time/clj-time"
   :mailing-list {:name "clj-time mailing list"
@@ -12,5 +12,7 @@
   :profiles {:dev {:plugins [[codox "0.6.1"]]}
              :1.2 {:dependencies [[org.clojure/clojure "1.2.1"]]}
              :1.3 {:dependencies [[org.clojure/clojure "1.3.0"]]}
-             :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}}
-  :aliases {"test-all" ["with-profile" "dev,default:dev,1.2,default:dev,1.3,default:dev,1.4,default" "test"]})
+             :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
+             :1.6 {:repositories [["snapshots" "https://oss.sonatype.org/content/repositories/snapshots/"]]
+                   :dependencies [[org.clojure/clojure "1.6.0-master-SNAPSHOT"]]}}
+  :aliases {"test-all" ["with-profile" "dev,default:dev,1.2,default:dev,1.3,default:dev,1.4,default:dev,1.6,default" "test"]})

@@ -20,7 +20,7 @@ If you are using Maven, add the following repository definition to your `pom.xml
 With Leiningen:
 
 ``` clj
-[clj-time "0.5.1"]
+[clj-time "0.6.0"]
 ```
 
 With Maven:
@@ -29,13 +29,16 @@ With Maven:
 <dependency>
   <groupId>clj-time</groupId>
   <artifactId>clj-time</artifactId>
-  <version>0.5.1</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 
 ## Bugs and Enhancements
 
 Please open issues against the [official clj-time repo on Github](https://github.com/clj-time/clj-time/issues).
+
+**Note: version 0.6.0 introduces a number of API changes to improve consistency.**
+The API now uses `second`, `seconds` and `millis` where it previously had `sec`, `secs` and `msecs`. The older API is still present but marked as deprecated (and calling deprecated functions will print a message to the console as well returning the result). The older API will be removed in version 0.7.0 so be prepared to update your code.
 
 ## Usage
 
