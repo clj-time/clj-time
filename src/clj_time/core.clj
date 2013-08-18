@@ -368,6 +368,13 @@
   ([#^Integer n]
      (Seconds/seconds n)))
 
+(defn secs
+  "DEPRECATED"
+  ([]
+     (seconds))
+  ([#^Integer n]
+     (seconds n)))
+
 (defn millis
   "Given a number, returns a Period representing that many milliseconds.
    Without an argument, returns a PeriodType representing only milliseconds."

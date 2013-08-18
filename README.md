@@ -63,7 +63,7 @@ Less-significant fields can be omitted:
 
 Get the current time with `(now)` and the start of the Unix epoch with `(epoch)`.
 
-Once you have a date-time, use accessors like `hour` and `sec` to access the corresponding fields:
+Once you have a date-time, use accessors like `hour` and `second` to access the corresponding fields:
 
 ``` clj
 => (hour (date-time 1986 10 14 22))
