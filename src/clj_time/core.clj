@@ -371,8 +371,10 @@
 (defn secs
   "DEPRECATED"
   ([]
+     (deprecated "DEPRECATED: secs has been deprecated in favor of seconds")
      (seconds))
   ([#^Integer n]
+     (deprecated "DEPRECATED: secs has been deprecated in favor of seconds")
      (seconds n)))
 
 (defn millis
@@ -441,7 +443,7 @@
 (defn in-msecs
   "DEPRECATED: Returns the number of milliseconds in the given Interval."
   [#^Interval in]
-  (deprecated "DEPRECATED: use in-millis")
+  (deprecated "DEPRECATED: in-msecs has been deprecated in favor of in-millis")
   (in-millis in))
 
 (defn in-seconds
@@ -452,7 +454,7 @@
 (defn in-secs
   "DEPRECATED: Returns the number of standard seconds in the given Interval."
   [#^Interval in]
-  (deprecated "Please use in-seconds instead.")
+  (deprecated "DEPRECATED: in-secs has been deprecated in favor of in-seconds")
   (in-seconds in))
 
 (defn in-minutes
@@ -556,7 +558,7 @@
 (defn secs?
   "DEPRECATED"
   [val]
-  (deprecated "Please use seconds? instead.")
+  (deprecated "DEPRECATED: secs? has been deprecated in favor of seconds?")
   (seconds? val))
 
 (defn mins-ago
