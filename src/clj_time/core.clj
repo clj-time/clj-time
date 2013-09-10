@@ -118,6 +118,7 @@
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
   (sec [this]
+    {:deprecated "0.6.0"}
     (deprecated "sec is being deprecated in favor of second")
     (.getSecondOfMinute this))
   (second [this] (.getSecondOfMinute this))
@@ -135,6 +136,7 @@
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
   (sec [this]
+    {:deprecated "0.6.0"}
     (deprecated "sec is being deprecated in favor of second")
     (.getSecondOfMinute this))
   (second [this] (.getSecondOfMinute this))
@@ -152,6 +154,7 @@
   (hour [this] (.getHourOfDay this))
   (minute [this] (.getMinuteOfHour this))
   (sec [this]
+    {:deprecated "0.6.0"}
     (deprecated "sec is being deprecated in favor of second")
     (.getSecondOfMinute this))
   (second [this] (.getSecondOfMinute this))
@@ -370,11 +373,12 @@
 
 (defn secs
   "DEPRECATED"
+  {:deprecated "0.6.0"}
   ([]
-     (deprecated "DEPRECATED: secs has been deprecated in favor of seconds")
+     (deprecated "secs has been deprecated in favor of seconds")
      (seconds))
   ([#^Integer n]
-     (deprecated "DEPRECATED: secs has been deprecated in favor of seconds")
+     (deprecated "secs has been deprecated in favor of seconds")
      (seconds n)))
 
 (defn millis
@@ -442,8 +446,9 @@
 
 (defn in-msecs
   "DEPRECATED: Returns the number of milliseconds in the given Interval."
+  {:deprecated "0.6.0"}
   [#^Interval in]
-  (deprecated "DEPRECATED: in-msecs has been deprecated in favor of in-millis")
+  (deprecated "in-msecs has been deprecated in favor of in-millis")
   (in-millis in))
 
 (defn in-seconds
@@ -453,8 +458,9 @@
 
 (defn in-secs
   "DEPRECATED: Returns the number of standard seconds in the given Interval."
+  {:deprecated "0.6.0"}
   [#^Interval in]
-  (deprecated "DEPRECATED: in-secs has been deprecated in favor of in-seconds")
+  (deprecated "in-secs has been deprecated in favor of in-seconds")
   (in-seconds in))
 
 (defn in-minutes
@@ -557,8 +563,9 @@
 
 (defn secs?
   "DEPRECATED"
+  {:deprecated "0.6.0"}
   [val]
-  (deprecated "DEPRECATED: secs? has been deprecated in favor of seconds?")
+  (deprecated "secs? has been deprecated in favor of seconds?")
   (seconds? val))
 
 (defn mins-ago
