@@ -11,7 +11,10 @@
   (is (= true (friday? (date-time 2012 9 14))))
   (is (= true (saturday? (date-time 2012 9 15))))
   (is (= true (sunday? (date-time 2012 9 16))))
-  (is (= false (monday? (date-time 2012 9 16)))))
+  (is (= false (monday? (date-time 2012 9 16))))
+  (is (= true (weekend? (date-time 2012 9 15))))
+  (is (= true (weekend? (date-time 2012 9 16))))
+  (is (= false (weekend? (date-time 2012 9 10)))))
 
 (deftest test-months-of-the-year
   (is (= true (january? (date-time 2012 1 10))))
@@ -26,4 +29,11 @@
   (is (= true (october? (date-time 2012 10 16))))
   (is (= true (november? (date-time 2012 11 16))))
   (is (= true (december? (date-time 2012 12 16))))
-  (is (= false (january? (date-time 2012 12 31)))))
+  (is (= false (january? (date-time 2012 12 31))))
+  (is (= true (first-day-of-month? (date-time 2012 2 1))))
+  (is (= true (last-day-of-month? (date-time 2013 2 28))))
+  (is (= false (last-day-of-month? (date-time 2012 2 28))))
+  (is (= true (last-day-of-month? (date-time 2012 2 29))))
+  (is (= true (last-day-of-month? (date-time 2013 10 31)))))
+
+
