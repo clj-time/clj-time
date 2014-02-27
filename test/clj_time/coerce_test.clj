@@ -14,7 +14,8 @@
   (let [dt (from-long 893462400000)
         d  (to-sql-date dt)]
     (is (instance? java.sql.Date d))
-    (is (= dt (from-sql-date d)))))
+    (is (= dt (from-sql-date d)))
+    (is (nil? (from-sql-date nil)))))
 
 (deftest test-from-sql-time
   (let [dt (from-long 893462400000)
