@@ -21,7 +21,8 @@
   (let [dt (from-long 893462400000)
         d  (to-sql-time dt)]
     (is (instance? java.sql.Timestamp d))
-    (is (= dt (from-sql-time d)))))
+    (is (= dt (from-sql-time d)))
+    (is (nil? (from-sql-time nil)))))
 
 (deftest test-from-long
   (is (= (date-time 1998 4 25) (from-long 893462400000))))
