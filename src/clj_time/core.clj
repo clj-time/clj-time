@@ -109,7 +109,8 @@
   (minus- [this ^ReadablePeriod period]
     "Returns a new date/time corresponding to the given date/time moved backwards by the given Period(s).")
   (first-day-of-the-month- [this] "Returns the first day of the month")
-  (last-day-of-the-month- [this] "Returns the last day of the month"))
+  (last-day-of-the-month- [this] "Returns the last day of the month")
+  (number-of-weeks-in-the-year [this] "Returs the number of weeks in the year"))
 
 (defprotocol InTimeUnitProtocol
   "Interface for in-<time unit> functions"
@@ -144,6 +145,8 @@
     (.. ^DateTime this dayOfMonth withMinimumValue))
   (last-day-of-the-month- [this]
      (.. ^DateTime this dayOfMonth withMaximumValue))
+  (number-of-weeks-in-the-year [this]
+    (.getWeekOfWeekyear this))
 
   org.joda.time.DateMidnight
   (year [this] (.getYear this))
@@ -166,6 +169,8 @@
     (.. ^DateMidnight this dayOfMonth withMinimumValue))
   (last-day-of-the-month- [this]
      (.. ^DateMidnight this dayOfMonth withMaximumValue))
+  (number-of-weeks-in-the-year [this]
+    (.getWeekOfWeekyear this))
 
   org.joda.time.LocalDateTime
   (year [this] (.getYear this))
@@ -188,6 +193,8 @@
     (.. ^LocalDateTime this dayOfMonth withMinimumValue))
   (last-day-of-the-month- [this]
      (.. ^LocalDateTime this dayOfMonth withMaximumValue))
+  (number-of-weeks-in-the-year [this]
+    (.getWeekOfWeekyear this))
 
   org.joda.time.YearMonth
   (year [this] (.getYear this))
@@ -210,6 +217,8 @@
     (.. ^LocalDate this dayOfMonth withMinimumValue))
   (last-day-of-the-month- [this]
      (.. ^LocalDate this dayOfMonth withMaximumValue))
+  (number-of-weeks-in-the-year [this]
+    (.getWeekOfWeekyear this))
 
   org.joda.time.LocalTime
   (hour [this] (.getHourOfDay this))
