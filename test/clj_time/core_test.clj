@@ -515,6 +515,16 @@
     (is (= d9 (last-day-of-the-month d10)))
     (is (= d9 (last-day-of-the-month d11)))))
 
+(deftest test-number-of-weeks-in-the-year
+  (is (= 52 (number-of-weeks-in-the-year (date-time 2012 1 1))))
+  (is (= 1 (number-of-weeks-in-the-year (date-time 2012 1 2))))
+  (is (= 1 (number-of-weeks-in-the-year (date-time 2012 1 8))))
+  (is (= 2 (number-of-weeks-in-the-year (date-time 2012 1 9))))
+  (is (= 34 (number-of-weeks-in-the-year (date-time 2012 8 20))))
+  (is (= 52 (number-of-weeks-in-the-year (date-time 2012 12 30))))
+  (is (= 1 (number-of-weeks-in-the-year (date-time 2012 12 31))))
+  (is (= 1 (number-of-weeks-in-the-year (date-time 2013 1 1)))))
+
 (deftest test-number-of-days-in-the-month
   (is (= 31 (number-of-days-in-the-month 2012 1)))
   (is (= 31 (number-of-days-in-the-month (date-time 2012 1 3))))
