@@ -694,12 +694,18 @@
   ([^long hours ^long minutes]
      (today-at hours minutes 0)))
 
+(def ^:dynamic *time-context* nil)
+
 (defn do-at* [^BaseDateTime base-date-time body-fn]
-  (DateTimeUtils/setCurrentMillisFixed (.getMillis base-date-time))
-  (try
-    (body-fn)
-    (finally
-      (DateTimeUtils/setCurrentMillisSystem))))
+  (let [millis (.getMillis base-date-time)]
+    (DateTimeUtils/setCurrentMillisFixed millis)
+    (try
+      (binding [*time-context* millis]
+        (body-fn))
+      (finally
+        (if *time-context*
+          (DateTimeUtils/setCurrentMillisFixed *time-context*)
+          (DateTimeUtils/setCurrentMillisSystem))))))
 
 (defmacro do-at
   "Like clojure.core/do except evalautes the expression at the given date-time"
