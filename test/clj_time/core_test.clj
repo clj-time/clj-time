@@ -573,3 +573,16 @@
         d1 (date-time y m d 13 0)]
     (is (= d1 (today-at 13 0)))
     (is (= d1 (today-at 13 0 0)))))
+
+(deftest test-nested-do-at
+  (let [t1 (date-time 1000)
+        t2 (date-time 2000)
+        t3 (date-time 2100)]
+    (do-at t1
+           (is (= (now) t1))
+           (do-at t2
+                  (is (= (now) t2)))
+           (is (= (now) t1))
+           (do-at t3
+                  (is (= (now) t3)))
+           (is (= (now) t1)))))
