@@ -670,3 +670,17 @@
 		(is (= (floor t minute) (date-time 0 1 2 3 4)))
 		(is (= (floor t second) (date-time 0 1 2 3 4 5)))
 		(is (= (floor t milli)  (date-time 0 1 2 3 4 5 6)))))
+
+(deftest test-floor-with-timezones
+  (are [tz-id floor-fn dt1-args dt2-args]
+      (let [timezone (time-zone-for-id tz-id)
+            [dt1 dt2] (map #(from-time-zone (apply date-time %)
+                                            timezone)
+                           [dt1-args dt2-args])
+            ^DateTime floored-dt1 (floor dt1 floor-fn)]
+        (and (= floored-dt1 dt2)
+             (= (.getZone floored-dt1) timezone)))
+    "Africa/Johannesburg" day [1 1 2 1]  [1 1 2]
+    "Africa/Johannesburg" day [1 1 1 23] [1 1 1]
+    "America/Los_Angeles" day [1 1 2 3]  [1 1 2]
+    "America/Los_Angeles" day [1 1 1 20] [1 1 1]))

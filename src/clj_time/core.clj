@@ -767,8 +767,11 @@
   e.g. (floor (now) hour) returns (now) for all units
   up to and including the hour"
   ([^DateTime dt dt-fn]
-	 (let [dt-fns [year month day hour minute second milli]]
-	 	(apply date-time
-	 		(map apply
-				(concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
-				(repeat [dt]))))))
+   (let [dt-fns [year month day hour minute second milli]
+         tz (.getZone dt)]
+    (.withZoneRetainFields
+  	 	(apply date-time
+  	 		(map apply
+  				(concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
+  				(repeat [dt])))
+      tz))))
