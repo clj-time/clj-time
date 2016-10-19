@@ -481,7 +481,7 @@
      (Seconds/seconds n)))
 
 (extend-protocol InTimeUnitProtocol
-  org.joda.time.Interval 
+  org.joda.time.Interval
   (in-millis [this] (.toDurationMillis this))
   (in-seconds [this] (.getSeconds (.toPeriod this (seconds))))
   (in-minutes [this] (.getMinutes (.toPeriod this (minutes))))
@@ -497,7 +497,7 @@
   (in-hours [this] (-> this .toPeriod .toStandardHours .getHours))
   (in-days [this] (-> this .toPeriod .toStandardDays .getDays))
   (in-weeks [this] (-> this .toPeriod .toStandardWeeks .getWeeks))
-  (in-months [this] 
+  (in-months [this]
     (condp instance? this
       org.joda.time.Months (.getMonths ^org.joda.time.Months this)
       org.joda.time.Years (* 12 (.getYears ^org.joda.time.Years this))
@@ -518,14 +518,14 @@
   [^Interval in]
   (deprecated "in-msecs has been deprecated in favor of in-millis")
   (in-millis in))
- 
+
 (defn in-secs
   "DEPRECATED: Returns the number of standard seconds in the given Interval."
   {:deprecated "0.6.0"}
   [^Interval in]
   (deprecated "in-secs has been deprecated in favor of in-seconds")
   (in-seconds in))
- 
+
 (defn secs
   "DEPRECATED"
   {:deprecated "0.6.0"}
