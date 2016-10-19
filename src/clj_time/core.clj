@@ -272,7 +272,7 @@
 (defn ^DateTime with-time-at-start-of-day
   "Returns a DateTime representing the start of the day. Normally midnight,
   but not always true, as in some time zones with daylight savings."
-  [dt]
+  [^DateTime dt]
   (.withTimeAtStartOfDay dt))
 
 (defn epoch
