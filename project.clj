@@ -10,6 +10,7 @@
   :dependencies [[joda-time "2.9.4"]
                  [org.clojure/clojure "1.8.0" :scope "provided"]]
   :min-lein-version "2.0.0"
+  :global-vars {*warn-on-reflection* true}
   :profiles {:dev {:dependencies [[org.clojure/java.jdbc "0.6.1"]]
                    :plugins [[codox "0.8.10"]]}
              :midje {:dependencies [[midje "1.9.0-alpha5"]]

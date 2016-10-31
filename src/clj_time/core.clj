@@ -770,6 +770,7 @@
    (let [dt-fns [year month day hour minute second milli]
          tz (.getZone dt)]
     (.withZoneRetainFields
+                ^DateTime
   	 	(apply date-time
   	 		(map apply
   				(concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
