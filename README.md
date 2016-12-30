@@ -166,7 +166,7 @@ overlap between two intervals:
 ```
 
 `today-at` returns a moment in time at the given hour,
-minute and second on the current date UTC:
+minute and second on the current date UTC; not the current system date:
 
 ``` clj
 (t/today-at 12 00)
