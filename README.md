@@ -166,13 +166,17 @@ overlap between two intervals:
 ```
 
 `today-at` returns a moment in time at the given hour,
-minute and second on the current date:
+minute and second on the current date UTC:
 
 ``` clj
 (t/today-at 12 00)
 => #<DateTime 2013-03-29T12:00:00.000Z>
 (t/today-at 12 00 05)
 => #<DateTime 2013-03-29T12:00:05.000Z>
+
+;; System clock says 11PM on 12/20/2016 UTC-5
+(t/today-at 7 00 00)
+=> #<DateTime 2016-12-21T7:00:00.000Z>
 ```
 
 ### clj-time.format
