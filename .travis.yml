@@ -1,4 +1,7 @@
 language: clojure
+cache:
+  directories:
+  - $HOME/.m2
 before_script:
   - rm -f test/readme.clj
   - echo y | sudo lein upgrade
