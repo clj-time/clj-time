@@ -22,6 +22,7 @@
              :master {:repositories [["snapshots" "https://oss.sonatype.org/content/repositories/snapshots/"]]
                       :dependencies [[org.clojure/clojure "1.9.0-master-SNAPSHOT"]]}
              :spec   {:dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                                     [org.clojure/test.check "0.9.0"]]}}
+                                     [org.clojure/test.check "0.9.0"]]
+                      :test-paths ["test" "test_clj_1.9"]}}
 
   :aliases {"test-all" ["with-profile" "dev,master,default,midje:dev,default,midje:dev,1.6,midje:dev,1.7,midje" "test"]})
