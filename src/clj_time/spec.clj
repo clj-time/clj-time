@@ -2,32 +2,12 @@
   "This namespace requires Clojure 1.9 or later. It defines a set of predicates plus a set of spec defs with associated generators."
   (:require [clojure.spec :as spec]
             [clojure.spec.gen :as gen]
+            [clj-time.types :refer [date-time? local-date-time? local-date? time-zone?]]
             [clj-time.core :refer [date-time]]
             [clj-time.coerce :refer [to-date-time to-long]])
   (:import [org.joda.time DateTime DateTimeZone LocalDate LocalDateTime]
            [org.joda.time.base BaseDateTime]
            [java.util TimeZone]))
-
-(defn date-time?
-  "This includes DateTime, MutableDateTime and DateMidnight. The time zone is not specified."
-  [x]
-  (instance? BaseDateTime x))
-
-(defn
-  ^{::spec/name "clj-time.spec/utc-date-time?"}
-  utc-date-time?
-  [x]
-  (and (date-time? x)
-       (= (.getZone ^BaseDateTime x) DateTimeZone/UTC)))
-
-(defn local-date-time? [x]
-  (instance? LocalDateTime x))
-
-(defn local-date? [x]
-  (instance? LocalDate x))
-
-(defn time-zone? [x]
-  (instance? DateTimeZone x))
 
 (def all-time-zones
   (delay
@@ -59,8 +39,8 @@
 (spec/def ::time-zone
           (spec/with-gen time-zone? *time-zones*))
 
-(spec/def ::utc-date-time
-          (spec/with-gen utc-date-time?
+(spec/def ::date-time
+          (spec/with-gen date-time?
                          #(gen/fmap (fn [ms] (DateTime. ms DateTimeZone/UTC))
                                     (*period*))))
 
