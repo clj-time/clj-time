@@ -24,6 +24,13 @@
   [^Long millis]
   (DateTime. millis ^DateTimeZone utc))
 
+(defn from-epoch
+  "Returns a DateTime instance in the UTC time zone
+   from given Unix epoch."
+  [^Long epoch]
+  (from-long (* epoch 1000)))
+
+
 (defn ^DateTime from-string
   "return DateTime instance from string using
    formatters in clj-time.format, returning first

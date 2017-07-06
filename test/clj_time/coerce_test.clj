@@ -29,6 +29,10 @@
 (deftest test-from-long
   (is (= (date-time 1998 4 25) (from-long 893462400000))))
 
+(deftest test-from-epoch
+  (is (= (date-time 1998 4 25)
+         (from-epoch 893462400))))
+
 (deftest test-from-string
   (is (= (from-string "1998-04-25T00:00:00.000Z")
          (date-time 1998 4 25))))
