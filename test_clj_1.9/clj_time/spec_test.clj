@@ -1,7 +1,7 @@
 (ns clj-time.spec-test
   (:require [clojure.test :refer :all]
-            [clojure.spec :as spec]
-            [clojure.spec.gen :as gen]
+            [clojure.spec.alpha :as spec]
+            [clojure.spec.gen.alpha :as gen]
             [clj-time.core :refer :all]
             [clj-time.types :as types]
             [clj-time.spec :as ts]))
