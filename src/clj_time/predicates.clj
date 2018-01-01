@@ -32,7 +32,7 @@
   (= (time/day-of-week date-time) 7))
 
 ;; weekend / weekday checks
-(defn weekend? [date-time] 
+(defn weekend? [date-time]
   (or (saturday? date-time) (sunday? date-time)))
 
 (defn weekday? [date-time]
@@ -75,8 +75,21 @@
 (defn december? [date-time]
   (= (time/month date-time) 12))
 
+;; Quarters
 
-;;First and last day of month checks
+(defn q1? [date-time]
+  (boolean (#{1 2 3} (time/month date-time))))
+
+(defn q2? [date-time]
+  (boolean (#{4 5 6} (time/month date-time))))
+
+(defn q3? [date-time]
+  (boolean (#{7 8 9} (time/month date-time))))
+
+(defn q4? [date-time]
+  (boolean (#{10 11 12} (time/month date-time))))
+
+;; First and last day of month checks
 (defn last-day-of-month? [date-time]
   (time/equal? (time/last-day-of-the-month date-time) date-time))
 
