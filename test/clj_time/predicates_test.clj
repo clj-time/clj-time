@@ -31,6 +31,21 @@
   (is (= true (december? (date-time 2012 12 16))))
   (is (= false (january? (date-time 2012 12 31)))))
 
+(deftest test-quarters-in-the-year
+  (is (= true (q1? (date-time 2012 1 10))))
+  (is (= true (q1? (date-time 2012 2 11))))
+  (is (= true (q1? (date-time 2012 3 12))))
+  (is (= true (q2? (date-time 2012 4 13))))
+  (is (= true (q2? (date-time 2012 5 14))))
+  (is (= true (q2? (date-time 2012 6 15))))
+  (is (= true (q3? (date-time 2012 7 16))))
+  (is (= true (q3? (date-time 2012 8 16))))
+  (is (= true (q3? (date-time 2012 9 16))))
+  (is (= true (q4? (date-time 2012 10 16))))
+  (is (= true (q4? (date-time 2012 11 16))))
+  (is (= true (q4? (date-time 2012 12 16))))
+  (is (= false (q1? (date-time 2012 12 31)))))
+
 (deftest test-first-day-of-the-month?
   (is (= true (first-day-of-month? (date-time 2012 2 1))))
   (is (= false (first-day-of-month? (date-time 2012 2 3)))))
