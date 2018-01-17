@@ -61,62 +61,62 @@
 (defn ^Long to-long
   "Convert `obj` to the number of milliseconds after the Unix epoch."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (.getMillis dt)))
 
 (defn ^Long to-epoch
   "Convert `obj` to Unix epoch."
   [obj]
-  (if-let [millis (to-long obj)]
+  (when-let [millis (to-long obj)]
     (quot millis 1000)))
 
 (defn ^java.util.Date to-date
   "Convert `obj` to a Java Date instance."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (Date. (.getMillis dt))))
 
 (defn ^java.sql.Date to-sql-date
   "Convert `obj` to a java.sql.Date instance."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (java.sql.Date. (.getMillis dt))))
 
 (defn ^java.sql.Timestamp to-sql-time
   "Convert `obj` to a java.sql.Timestamp instance."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (java.sql.Timestamp. (.getMillis dt))))
 
 (defn to-string
   "Returns a string representation of obj in UTC time-zone
   using (ISODateTimeFormat/dateTime) date-time representation."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (time-fmt/unparse (:date-time time-fmt/formatters) dt)))
 
 (defn ^java.sql.Timestamp to-timestamp
   "Convert `obj` to a Java SQL Timestamp instance."
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (java.sql.Timestamp. (.getMillis dt))))
 
 (defn ^org.joda.time.LocalDate to-local-date
   "Convert `obj` to a org.joda.time.LocalDate instance"
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (LocalDate. (.getMillis (from-time-zone dt (default-time-zone))))))
 
 (defn ^org.joda.time.LocalDateTime to-local-date-time
   "Convert `obj` to a org.joda.time.LocalDateTime instance"
   [obj]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (LocalDateTime. (.getMillis (from-time-zone dt (default-time-zone))))))
 
 (defn ^org.joda.time.LocalDate in-time-zone
   "Convert `obj` into `tz`, return org.joda.time.LocalDate instance."
   [obj tz]
-  (if-let [dt (to-date-time obj)]
+  (when-let [dt (to-date-time obj)]
     (-> dt
         (to-time-zone tz)
         .toLocalDate)))
