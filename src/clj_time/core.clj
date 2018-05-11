@@ -781,3 +781,13 @@
   				(concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
   				(repeat [dt])))
       tz))))
+
+(defmacro ^:private when-available [sym & body]
+  (when (resolve sym)
+    `(do ~@body)))
+
+(when-available Inst
+  (extend-protocol Inst
+    org.joda.time.ReadableInstant
+    (inst-ms* [inst]
+      (.getMillis inst))))
