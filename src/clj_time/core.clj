@@ -419,7 +419,10 @@
    the given ReadableDateTime, but with calendar fields corresponding to the given
    TimeZone."
   [^DateTime dt ^DateTimeZone tz]
-  (.withZone dt tz))
+  (-> dt
+      (.withZone tz)
+      .toLocalDateTime
+      (.toDateTime tz)))
 
 (defn ^org.joda.time.DateTime
   from-time-zone
@@ -427,7 +430,10 @@
    the given ReadableDateTime, but for a correspondingly different absolute instant in
    time."
   [^DateTime dt ^DateTimeZone tz]
-  (.withZoneRetainFields dt tz))
+  (-> dt
+      (.withZoneRetainFields tz)
+      .toLocalDateTime
+      (.toDateTime tz)))
 
 (defn years
   "Given a number, returns a Period representing that many years.
@@ -774,12 +780,12 @@
   ([^DateTime dt dt-fn]
    (let [dt-fns [year month day hour minute second milli]
          tz (.getZone dt)]
-    (.withZoneRetainFields
-                ^DateTime
-  	 	(apply date-time
-  	 		(map apply
-  				(concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
-  				(repeat [dt])))
+     (.withZoneRetainFields
+      ^DateTime
+      (apply date-time
+             (map apply
+                  (concat (take-while (partial not= dt-fn) dt-fns) [dt-fn])
+                  (repeat [dt])))
       tz))))
 
 (defmacro ^:private when-available [sym & body]
