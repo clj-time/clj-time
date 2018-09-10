@@ -1,5 +1,9 @@
-# `clj-time` <a href="http://travis-ci.org/#!/clj-time/clj-time/builds"><img src="https://secure.travis-ci.org/clj-time/clj-time.png" /></a> [![Dependency Status](https://www.versioneye.com/clojure/clj-time:clj-time/badge.png)](https://www.versioneye.com/clojure/clj-time:clj-time) [![Join the chat at https://gitter.im/clj-time/clj-time](https://badges.gitter.im/clj-time/clj-time.svg)](https://gitter.im/clj-time/clj-time?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/clj-time/clj-time.svg?branch=master)](https://travis-ci.org/clj-time/clj-time)
+[![Dependencies Status](https://versions.deps.co/clj-time/clj-time/status.svg)](https://versions.deps.co/clj-time/clj-time)
+[![Downloads](https://versions.deps.co/clj-time/clj-time/downloads.svg)](https://versions.deps.co/clj-time/clj-time)
+[![Join the chat at https://gitter.im/clj-time/clj-time](https://badges.gitter.im/clj-time/clj-time.svg)](https://gitter.im/clj-time/clj-time?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+# clj-time
 
 A date and time library for Clojure, wrapping the [Joda Time](http://www.joda.org/joda-time/) library. **The Joda Time website says:**
 
