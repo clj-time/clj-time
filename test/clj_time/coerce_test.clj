@@ -157,7 +157,6 @@
                                 (to-edn o)))
     (date-time 1998 4 25)
     (date-midnight 1998 4 25)
-    (date-midnight 1998 4 25)
     (Date. 893462400000)
     (java.sql.Date. 893462400000)
     893462400000
