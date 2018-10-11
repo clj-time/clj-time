@@ -276,6 +276,38 @@ There are also conversions to and from `java.util.Date` (`to-date` and
 `java.sql.Timestamp` (`to-sql-time` and `from-sql-time`) and several
 other types.
 
+To support serialization to the ubiquitous [EDN format](https://github.com/edn-format/edn),
+`pr`, `prn` etc. will serialize date-times in a tagged-literal format, that `clojure.edn/read`
+will deserialize.  There is a \"data_readers.clj\" file, or if not loaded a `data-readers` var
+to use with `clojure.edn`.
+
+```clj
+(pr-str (t/date-time 1998 4 25))
+=> #clj-time/date-time "1998-04-25T00:00:00.000Z"
+```
+
+```clj
+(require '[clojure.edn :as edn])
+=> nil
+```
+
+```clj
+(def x (edn/read-string {:readers c/data-readers}
+                        (pr-str (t/date-time 1998 4 25))))
+=> #'user/x
+```
+
+```clj
+(type x)
+=> org.joda.time.DateTime
+```
+
+```clj
+x
+=> #clj-time/date-time "1998-04-25T00:00:00.000Z"
+```
+
+
 ### clj-time.local
 
 The namespace `clj-time.local` contains functions for working with
@@ -395,7 +427,7 @@ objects when "reading" where you would have previously expected
 
 Running the tests:
 
-    $ rm -f test/readme.clj && lein test-all && lein test-readme
+    $ rm -f test/readme.clj && lein test-all
 
 (assumes Leiningen 2.x)
 
