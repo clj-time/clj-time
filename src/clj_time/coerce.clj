@@ -10,7 +10,8 @@
   (:refer-clojure :exclude [extend second])
   (:require [clj-time.core :refer :all]
             [clj-time.format :as time-fmt])
-  (:import [java.sql Timestamp]
+  (:import [java.io Writer]
+           [java.sql Timestamp]
            [java.util Date]
            [org.joda.time DateTime DateTimeZone DateMidnight YearMonth
                           LocalDate LocalDateTime]))
@@ -36,6 +37,10 @@
    which parses"
   [^String s]
   (time-fmt/parse s))
+
+(def data-readers
+  "tagged literal support if loader does not find \"data_readers.clj\""
+  {'clj-time/date-time from-string})
 
 (defn ^org.joda.time.DateTime from-date
   "Returns a DateTime instance in the UTC time zone corresponding to the given
@@ -94,6 +99,17 @@
   [obj]
   (when-let [dt (to-date-time obj)]
     (time-fmt/unparse (:date-time time-fmt/formatters) dt)))
+
+(defn ^String to-edn
+  "Convert `obj` to a string representation readable by clojure.edn/read."
+  [obj]
+  (when-let [dt (to-date-time obj)]
+    (str "#clj-time/date-time \"" (to-string dt) "\"")))
+
+;; pr and prn support to write edn
+(defmethod print-method org.joda.time.DateTime
+  [v ^java.io.Writer w]
+  (.write w (to-edn v)))
 
 (defn ^java.sql.Timestamp to-timestamp
   "Convert `obj` to a Java SQL Timestamp instance."

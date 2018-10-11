@@ -1,6 +1,7 @@
 (ns clj-time.coerce-test
   (:refer-clojure :exclude [extend second])
-  (:require [clojure.test :refer :all]
+  (:require [clojure.edn :as edn]
+            [clojure.test :refer :all]
             [clj-time [core :refer :all] [coerce :refer :all]])
   (:import java.util.Date java.sql.Timestamp
            [org.joda.time LocalDate LocalDateTime]))
@@ -143,6 +144,25 @@
   (is (= "1998-04-25T00:00:00.000Z" (to-string 893462400000)))
   (is (= "1998-04-25T00:00:00.000Z" (to-string (Timestamp. 893462400000))))
   (is (= "1998-04-25T00:00:00.000Z" (to-string "1998-04-25T00:00:00.000Z"))))
+
+(deftest test-to-edn
+  (is (nil? (to-edn nil)))
+  (is (nil? (to-edn "")))
+  (is (nil? (to-edn "x")))
+  (is (= (date-time 1970 1 1 0 0 0 0)
+         (edn/read-string {:readers data-readers}
+                          (to-edn 0))))
+  (are [o] (= (date-time 1998 4 25 0 0 0 0)
+               (edn/read-string {:readers data-readers}
+                                (to-edn o)))
+    (date-time 1998 4 25)
+    (date-midnight 1998 4 25)
+    (date-midnight 1998 4 25)
+    (Date. 893462400000)
+    (java.sql.Date. 893462400000)
+    893462400000
+    (Timestamp. 893462400000)
+    "1998-04-25T00:00:00.000Z"))
 
 (deftest test-to-timestamp
   (is (nil? (to-timestamp nil)))
