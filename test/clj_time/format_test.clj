@@ -135,6 +135,15 @@
     (is (= "2012-02-01 22:15"
            (unparse fmt (date-time 2012 2 1 22 15))))))
 
+
+(deftest test-parser-with-builtin-time-formatters
+  (let [fmt (formatters :time-no-ms)]
+    (is (= "10:00:20Z" (unparse fmt (parse fmt "10:00:20Z")))))
+
+  (let [fmt (formatters :time)]
+    (is (= "10:00:20.120Z" (unparse fmt (parse fmt "10:00:20.120Z")))))
+  )
+
 (deftest test-mysql-format
   (are [expectation mysql] (= (parse mysql) expectation)
        (date-time 2013 1 1 0 0 0) "2013-01-01 00:00:00"
