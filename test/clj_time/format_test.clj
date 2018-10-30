@@ -139,6 +139,9 @@
   (let [fmt (formatters :time-no-ms)]
     (is (= "10:00:20Z" (unparse fmt (parse fmt "10:00:20Z")))))
 
+  (let [fmt (formatters :week-date)]
+    (is (= "2018-W44-2" (unparse fmt (parse fmt "2018-W44-2")))))
+
   (let [fmt (formatters :time)]
     (is (= "10:00:20.120Z" (unparse fmt (parse fmt "10:00:20.120Z")))))
   )
@@ -146,6 +149,9 @@
 (deftest test-parser-with-builtin-time-formatters-with-zone
   (let [fmt (with-zone (formatters :time-no-ms) (time-zone-for-offset 2))]
     (is (= "10:00:20+02:00" (unparse fmt (parse fmt "10:00:20+02:00")))))
+
+  (let [fmt (formatters :week-date-time-no-ms)]
+    (is (= "2018-W44-2T05:09:54Z" (unparse fmt (parse fmt "2018-W44-2T05:09:54Z")))))
 
   (let [fmt (with-zone (formatters :time) (time-zone-for-offset 2))]
     (is (= "10:00:20.120+02:00" (unparse fmt (parse fmt "10:00:20.120+02:00"))))))
