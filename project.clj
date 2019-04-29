@@ -27,11 +27,11 @@
                       :test-paths ["test" "test_clj_1.10"]}}
 
   :aliases {"test-all" ["with-profile"
-                        ~(str "dev,spec,default,midje:" ; 1.10 + spec
-                              (when-not java7?
+                        ~(str (when-not java7?
                                 ;; 1.10 requires Java 8+
-                                "dev,default,midje:")
+                                "dev,spec,default,midje:" ; 1.10 + spec
+                                "dev,default,midje:") ; 1.10 without spec
                               "dev,1.7,midje:" ; 1.7 is earliest we support
-                              "dev,1.8,midje" ; 1.8 is supported too
-                              "dev,1.9,midje") ; and so is 1.9
+                              "dev,1.8,midje:" ; 1.8 is supported too
+                              "dev,1.9,midje:") ; and so is 1.9
                         "test"]})
