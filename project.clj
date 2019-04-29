@@ -10,12 +10,12 @@
             :url "http://www.opensource.org/licenses/mit-license.php"
             :distribution :repo}
   :dependencies [[joda-time "2.10"]
-                 [org.clojure/clojure "1.9.0" :scope "provided"]]
+                 [org.clojure/clojure "1.10.0" :scope "provided"]]
   :min-lein-version "2.0.0"
   :global-vars {*warn-on-reflection* true}
-  :profiles {:dev {:dependencies [[org.clojure/java.jdbc "0.7.8"]]
-                   :plugins [[codox "0.10.5"]]}
-             :midje {:dependencies [[midje "1.9.3"]]
+  :profiles {:dev {:dependencies [[org.clojure/java.jdbc "0.7.9"]]
+                   :plugins [[codox "0.10.6"]]}
+             :midje {:dependencies [[midje "1.9.8"]]
                      :plugins      [[lein-midje "3.2.1"]
                                     [midje-readme "1.0.9"]]
                      :midje-readme {:require "[clj-time.core :as t] [clj-time.predicates :as pr] [clj-time.format :as f] [clj-time.coerce :as c]"}}
