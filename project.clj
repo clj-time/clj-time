@@ -22,8 +22,6 @@
              :1.7    {:dependencies [[org.clojure/clojure "1.7.0"]]}
              :1.8    {:dependencies [[org.clojure/clojure "1.8.0"]]}
              :1.9    {:dependencies [[org.clojure/clojure "1.9.0"]]}
-             :master {:repositories [["snapshots" "https://oss.sonatype.org/content/repositories/snapshots/"]]
-                      :dependencies [[org.clojure/clojure "1.10.0-master-SNAPSHOT"]]}
              :spec   {:dependencies [[org.clojure/clojure "1.10.0"]
                                      [org.clojure/test.check "0.10.0-alpha4"]]
                       :test-paths ["test" "test_clj_1.10"]}}
@@ -32,8 +30,7 @@
                         ~(str "dev,spec,default,midje:" ; 1.10 + spec
                               (when-not java7?
                                 ;; 1.10 requires Java 8+
-                                "dev,master,default,midje:")
-                              "dev,default,midje:" ; 1.10 without spec
+                                "dev,default,midje:")
                               "dev,1.7,midje:" ; 1.7 is earliest we support
                               "dev,1.8,midje" ; 1.8 is supported too
                               "dev,1.9,midje") ; and so is 1.9
