@@ -146,6 +146,13 @@ date-time:
 => #<DateTime 1986-12-05T00:00:00.000Z>
 ```
 
+You can perform also `minus` operations
+```clj
+(t/minus (t/date-time 1986 10 14 6) (t/hours 2))
+=> #<DateTime 1986-10-14T04:00:00.000Z>
+```
+
+
 An `Interval` is used to represent the span of time between two
 `DateTime` instances. Construct one using `interval`, then query them
 using `within?`, `overlaps?`, and `abuts?`
