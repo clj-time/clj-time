@@ -1,6 +1,6 @@
 (ns clj-time.types
   "This namespace defines a set of predicates for the various Joda Time types used by clj-time."
-  (:import [org.joda.time DateTimeZone LocalDate LocalDateTime]
+  (:import [org.joda.time DateTimeZone LocalDate LocalDateTime ReadablePeriod]
            [org.joda.time.base BaseDateTime]))
 
 (defn date-time? [x]
@@ -15,3 +15,6 @@
 
 (defn time-zone? [x]
   (instance? DateTimeZone x))
+
+(defn period? [x]
+  (instance? ReadablePeriod x))

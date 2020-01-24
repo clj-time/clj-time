@@ -15,4 +15,12 @@
 
   (is (not (types/date-time? (local-date 2018 8 22))))
   (is (not (types/local-date-time? (local-date 2018 8 22))))
-  (is (types/local-date? (local-date 2018 8 22))))
+  (is (types/local-date? (local-date 2018 8 22)))
+
+  (is (not (types/period? (local-date 2018 8 22))))
+  (are [f args] (types/period? (apply f args))
+    years    [2]
+    months   [3]
+    weeks    [5]
+    days     [7]
+    minutes  [11]))
