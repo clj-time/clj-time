@@ -13,7 +13,8 @@
                  [org.clojure/clojure "1.10.0" :scope "provided"]]
   :min-lein-version "2.0.0"
   :global-vars {*warn-on-reflection* true}
-  :profiles {:dev {:dependencies [[org.clojure/java.jdbc "0.7.9"]]
+  :profiles {:dev {:dependencies [[org.clojure/java.jdbc "0.7.9"]
+                                  [seancorfield/next.jdbc "1.1.588"]]
                    :plugins [[codox "0.10.6"]]}
              :midje {:dependencies [[midje "1.9.8"]]
                      :plugins      [[lein-midje "3.2.1"]
